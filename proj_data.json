@@ -1,0 +1,33 @@
+{
+    "SSF00575": {
+        "plate num": 5,
+        "first rep": 1,
+        "last rep": 0,
+        "all rep": 0,
+        "raw_file_path": "/mnt/lab/High Throughput Screening/HiPrBind/Data_Parser_Helper_Tool/Training Helper tool/Test_SSF09999/TEST_HiPr_Bind/TEST_Raw/SSF00575.csv",
+        "Plate IDs": [
+            "P1-1",
+            "P1-2",
+            "P2",
+            "P3",
+            "P4"
+        ],
+        "OD path": "/mnt/lab/High Throughput Screening/HiPrBind/Data_Parser_Helper_Tool/Training Helper tool/Test_SSF09999/TEST_OD/TEST_Processed/TEST_SSF09999_OD600 - Copy.xlsx",
+        "Output path": "/mnt/lab/High Throughput Screening/HiPrBind/Data_Parser_Helper_Tool/Training Helper tool/Test_SSF09999/TEST_HiPr_Bind/TEST_Processed/SSF00575_output.xlsx",
+        "Dilution volumes": "0.35714285714285715, 0.05639097744360902, 0.006265664160401002, 0.00036856848002358837"
+    },
+    "SSF00580": {
+        "plate num": 2,
+        "first rep": 0,
+        "last rep": 1,
+        "all rep": 0,
+        "raw_file_path": "/mnt/lab/High Throughput Screening/HiPrBind/Data_Parser_Helper_Tool/Training Helper tool/Test_SSF09999/TEST_HiPr_Bind/TEST_Raw/SSF00580.csv",
+        "Plate IDs": [
+            "P1-1",
+            "P1-2"
+        ],
+        "OD path": "/mnt/lab/High Throughput Screening/HiPrBind/Data_Parser_Helper_Tool/Training Helper tool/SSF00580 24DW OD.xlsx",
+        "Output path": "/mnt/lab/High Throughput Screening/HiPrBind/Data_Parser_Helper_Tool/Training Helper tool/Test_SSF09999/TEST_HiPr_Bind/TEST_Processed/SSF00580_output.xlsx",
+        "Dilution volumes": "0.35714285714285715, 0.05639097744360902, 0.006265664160401002, 0.00036856848002358837"
+    }
+}
