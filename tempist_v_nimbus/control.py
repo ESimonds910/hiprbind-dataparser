@@ -15,6 +15,7 @@ file_finder = FileFinder()
 
 # This data will be used for testing
 plates = "P1 P2 P3 P4 P5 P6".split()
+volumes = [0.5, 0.25, 0.125, 0.0625, 0.03125, 0.02, 0.01, 0.001]
 raw_enpsire_path = r"L:/High Throughput Screening/HiPrBind/Data_Parser_Helper_Tool/Training Helper tool/TestEnpireFile.csv"
 
 # window.destroy()
@@ -22,4 +23,4 @@ raw_enpsire_path = r"L:/High Throughput Screening/HiPrBind/Data_Parser_Helper_To
 
 source_df, rep_df, od = file_finder.data_finder(plates, raw_enpsire_path, "")
 
-data_formatter.data_format(source_df)
+data_formatter.data_format(source_df, plates, volumes)
