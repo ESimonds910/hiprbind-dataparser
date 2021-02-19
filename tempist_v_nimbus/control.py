@@ -2,6 +2,8 @@ from tkinter import Tk
 from tkinter.filedialog import askopenfilename
 from modules.import_csv import FileFinder
 import data_formatter
+import eight_pt_calculations
+
 import pandas as pd
 
 file_finder = FileFinder()
@@ -23,4 +25,6 @@ raw_enpsire_path = r"L:/High Throughput Screening/HiPrBind/Data_Parser_Helper_To
 
 source_df, rep_df, od = file_finder.data_finder(plates, raw_enpsire_path, "")
 
-data_formatter.data_format(source_df, plates, volumes)
+clean_df = data_formatter.data_format(source_df, plates, volumes)
+
+complete_df = eight_pt_calculations.make_calculations(clean_df)

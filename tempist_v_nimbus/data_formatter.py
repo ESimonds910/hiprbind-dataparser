@@ -23,7 +23,6 @@ def data_format(source, plates, volumes):
     print(clean_df.tail())
     clean_df.to_csv("Output.csv")
 
-
     clean_df = pd.DataFrame()
     start_row = 0
     end_row = 8
@@ -42,15 +41,19 @@ def data_format(source, plates, volumes):
                                        + list(source.iloc[row + 9][[dna_col_id, dna_col_id + 1]])],
                                        index=["Alpha", "DNA"]).transpose()
                 bloc_df.insert(0, "Plate", f"P{plate + 1}")
-                bloc_df.insert(1, "Volumes", volumes)
                 if plate + 1 < 4:
-                    bloc_df.insert(2, "Method", "Nimbus")
+                    bloc_df.insert(1, "Method", "Nimbus")
                 else:
-                    bloc_df.insert(2, "Method", "Tempist")
+                    bloc_df.insert(1, "Method", "Tempist")
+                if int((row - 16 * plate) / 2) == 3:
+                    bloc_df.insert(2, "Sample", "Standard")
+                else:
+                    bloc_df.insert(2, "Sample", "Experimental")
+                bloc_df.insert(3, "Volumes", volumes)
                 clean_df = pd.concat([clean_df, bloc_df])
         start_row += 16
         end_row += 16
-        print(f"shape: {clean_df.shape}")
-        print(clean_df.tail())
-        clean_df.to_csv("Output8pt.csv")
-        return clean_df
+    #     print(f"shape: {clean_df.shape}")
+    #     print(clean_df.tail())
+    # clean_df.to_csv("Output8pt.csv")
+    return clean_df
