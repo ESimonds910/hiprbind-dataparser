@@ -1,5 +1,5 @@
 import pandas as pd
-
+import numpy as np
 
 def data_format(source, plates, volumes):
 
@@ -19,14 +19,16 @@ def data_format(source, plates, volumes):
                             index=["Alpha", "DNA"]).transpose()
             bloc_df.insert(0, "Plate", source.iloc[row]["Plate"])
             clean_df = pd.concat([clean_df, bloc_df])
-    print(f"shape: {clean_df.shape}")
-    print(clean_df.tail())
     clean_df.to_csv("Output.csv")
-
+    well_id = [f"A{str(y).zfill(2)}" for y in range(1, 13)] \
+              + [f"B{str(y).zfill(2)}" for y in range(1, 13)] \
+              + [f"C{str(y).zfill(2)}" for y in range(1, 13)] \
+              + [f"D{str(y).zfill(2)}" for y in range(1, 13)]
     clean_df = pd.DataFrame()
     start_row = 0
     end_row = 8
     for plate in range(len(plates)):
+        well_index = 0
         for row in range(start_row, end_row, 2):
             end_col = int(source.shape[1] / 2)
             for col in range(1, end_col, 2):
@@ -49,8 +51,10 @@ def data_format(source, plates, volumes):
                     bloc_df.insert(2, "Sample", "Standard")
                 else:
                     bloc_df.insert(2, "Sample", "Experimental")
-                bloc_df.insert(3, "Volumes", volumes)
+                bloc_df.insert(3, "Well_Id", well_id[well_index])
+                bloc_df.insert(4, "Volumes", volumes)
                 clean_df = pd.concat([clean_df, bloc_df])
+                well_index += 1
         start_row += 16
         end_row += 16
     #     print(f"shape: {clean_df.shape}")
