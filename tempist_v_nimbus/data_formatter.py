@@ -53,6 +53,7 @@ def data_format(source, plates, volumes):
                     bloc_df.insert(2, "Sample", "Experimental")
                 bloc_df.insert(3, "Well_Id", well_id[well_index])
                 bloc_df.insert(4, "Volumes", volumes)
+                bloc_df.insert(0, "Id", bloc_df["Plate"] + "-" + bloc_df["Well_Id"])
                 clean_df = pd.concat([clean_df, bloc_df])
                 well_index += 1
         start_row += 16
