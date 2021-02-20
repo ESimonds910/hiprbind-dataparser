@@ -21,6 +21,7 @@ class FileFinder:
         self.od_data = pd.DataFrame()
 
     def data_finder(self, plates, input_raw_path, input_od_path):
+        print(input_raw_path)
         all_alpha_data = pd.DataFrame()
         all_dna_data = pd.DataFrame()
         replicate_alpha_data = pd.DataFrame()
@@ -29,6 +30,7 @@ class FileFinder:
             self.od_data = pd.read_excel(input_od_path)
 
         except FileNotFoundError:
+            print("passed")
             pass
         else:
             for column in self.od_data.columns:
@@ -37,17 +39,21 @@ class FileFinder:
             self.od_data["Od600"] = self.od_data["Od600"].replace(" ", "0.0")
             self.od_data.set_index("Harvest Well", drop=False, inplace=True)
             # pd.DataFrame.to_csv(self.od_data, "od_data.csv")
-
+            self.od_data.insert(0, "Source", self.od_data["Harvest Sample Id"].apply(lambda x: x.split('-')[1]))
+            self.od_data.insert(0, "ID", self.od_data["Source"] + "-" + self.od_data["Harvest Well"], True)
+            self.od_data.set_index("ID", inplace=True)
         try:
             count = 0
             for plate in plates:
+                print(plate)
                 new_alpha_data = pd.read_csv(
                     input_raw_path,
                     header=None,
                     names=PLATE_IDX,
                     usecols=np.arange(0, 25),
                     skiprows=7 + count * 48,
-                    nrows=16
+                    nrows=16,
+                    encoding='unicode_escape'
                 )
                 new_dna_data = pd.read_csv(
                     input_raw_path,
@@ -55,7 +61,8 @@ class FileFinder:
                     names=DNA_PLATE_IDX,
                     usecols=np.arange(0, 25),
                     skiprows=31 + count * 48,
-                    nrows=16
+                    nrows=16,
+                    encoding='unicode_escape'
                 )
 
                 new_alpha_data.insert(1, "Plate", plate)
@@ -78,13 +85,6 @@ class FileFinder:
         else:
             self.all_data = pd.concat([all_alpha_data, all_dna_data], axis=1)
             self.all_rep_data = pd.concat([replicate_alpha_data, replicate_dna_data], axis=1)
-            self.od_data.insert(0, "Source", self.od_data["Harvest Sample Id"].apply(lambda x: x.split('-')[1]))
-            self.od_data.insert(0, "ID", self.od_data["Source"] + "-" + self.od_data["Harvest Well"], True)
-            self.od_data.set_index("ID", inplace=True)
-
-            # pd.DataFrame.to_csv(self.all_data, "data_output.csv")
-            # pd.DataFrame.to_csv(self.all_rep_data, "rep_data_output.csv")
-            # pd.DataFrame.to_csv(self.od_data, "od_data.csv")
 
             return self.all_data, self.all_rep_data, self.od_data
 
