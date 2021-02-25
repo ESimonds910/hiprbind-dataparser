@@ -21,8 +21,8 @@ class DataFormatter:
                 main_data_bloc = all_enspire_data[all_enspire_data["Plate"] == plate]
                 rep_data_bloc = all_rep_data[all_rep_data["Plate"] == plate]
             except KeyError:
-                pass
-            else:
+                main_data_bloc = all_enspire_data[all_enspire_data["Plate"] == plate]
+            finally:
                 data_signals_list = []
                 rep_data_signals_list = []
                 for r in range(0, 16, 2):
@@ -76,4 +76,5 @@ class DataFormatter:
 
         # pd.DataFrame.to_csv(self.all_data_signals, "data_output.csv")
         # return self.all_data_signals, self.all_rep_data_signals
+        print(self.all_data_signals)
         return self.all_data_signals

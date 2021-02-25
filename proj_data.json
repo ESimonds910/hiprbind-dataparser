@@ -1,33 +1,16 @@
 {
-    "SSF00575": {
-        "plate num": 5,
-        "first rep": 1,
-        "last rep": 0,
-        "all rep": 0,
-        "raw_file_path": "/mnt/lab/High Throughput Screening/HiPrBind/Data_Parser_Helper_Tool/Training Helper tool/Test_SSF09999/TEST_HiPr_Bind/TEST_Raw/SSF00575.csv",
-        "Plate IDs": [
-            "P1-1",
-            "P1-2",
-            "P2",
-            "P3",
-            "P4"
-        ],
-        "OD path": "/mnt/lab/High Throughput Screening/HiPrBind/Data_Parser_Helper_Tool/Training Helper tool/Test_SSF09999/TEST_OD/TEST_Processed/TEST_SSF09999_OD600 - Copy.xlsx",
-        "Output path": "/mnt/lab/High Throughput Screening/HiPrBind/Data_Parser_Helper_Tool/Training Helper tool/Test_SSF09999/TEST_HiPr_Bind/TEST_Processed/SSF00575_output.xlsx",
-        "Dilution volumes": "0.35714285714285715, 0.05639097744360902, 0.006265664160401002, 0.00036856848002358837"
-    },
-    "SSF00580": {
+    "SSF00603-ULBP2": {
         "plate num": 2,
         "first rep": 0,
-        "last rep": 1,
+        "last rep": 0,
         "all rep": 0,
-        "raw_file_path": "/mnt/lab/High Throughput Screening/HiPrBind/Data_Parser_Helper_Tool/Training Helper tool/Test_SSF09999/TEST_HiPr_Bind/TEST_Raw/SSF00580.csv",
+        "raw_file_path": "/mnt/lab/Molecular Sciences/Small Scale Runs/SSF00603 DSS Xolo reference sequence into 3 hosts/Assays/HiPrBind/Raw/SSF00603-ULBP2.csv",
         "Plate IDs": [
-            "P1-1",
-            "P1-2"
+            "P1",
+            "P2"
         ],
-        "OD path": "/mnt/lab/High Throughput Screening/HiPrBind/Data_Parser_Helper_Tool/Training Helper tool/SSF00580 24DW OD.xlsx",
-        "Output path": "/mnt/lab/High Throughput Screening/HiPrBind/Data_Parser_Helper_Tool/Training Helper tool/Test_SSF09999/TEST_HiPr_Bind/TEST_Processed/SSF00580_output.xlsx",
-        "Dilution volumes": "0.35714285714285715, 0.05639097744360902, 0.006265664160401002, 0.00036856848002358837"
+        "OD path": "/mnt/lab/Molecular Sciences/Small Scale Runs/SSF00603 DSS Xolo reference sequence into 3 hosts/Assays/OD/Processed/SSF00603  Xolo DSS Processed OD600.xlsx",
+        "Output path": "/mnt/lab/Molecular Sciences/Small Scale Runs/SSF00603 DSS Xolo reference sequence into 3 hosts/Assays/HiPrBind/Processed/SSF00603_ULBP2_output.xlsx",
+        "Dilution volumes": "2.00, 0.67, 0.15, 0.03"
     }
 }

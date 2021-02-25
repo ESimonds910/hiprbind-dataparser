@@ -21,7 +21,7 @@ class FileFinder:
         self.od_data = pd.DataFrame()
 
     def data_finder(self, plates, input_raw_path, input_od_path):
-        print(input_raw_path)
+        print(input_od_path)
         all_alpha_data = pd.DataFrame()
         all_dna_data = pd.DataFrame()
         replicate_alpha_data = pd.DataFrame()
@@ -30,18 +30,23 @@ class FileFinder:
             self.od_data = pd.read_excel(input_od_path)
 
         except FileNotFoundError:
-            print("passed")
+            messagebox.showinfo(title="Uh oh...", message="Something's wrong. The OD file wasn't found.")
             pass
         else:
             for column in self.od_data.columns:
                 self.od_data.rename(columns={column: column.title()}, inplace=True)
-            self.od_data.dropna(subset=["Ssf Exp"], inplace=True)
-            self.od_data["Od600"] = self.od_data["Od600"].replace(" ", "0.0")
-            self.od_data.set_index("Harvest Well", drop=False, inplace=True)
-            # pd.DataFrame.to_csv(self.od_data, "od_data.csv")
-            self.od_data.insert(0, "Source", self.od_data["Harvest Sample Id"].apply(lambda x: x.split('-')[1]))
-            self.od_data.insert(0, "ID", self.od_data["Source"] + "-" + self.od_data["Harvest Well"], True)
-            self.od_data.set_index("ID", inplace=True)
+            try:
+                self.od_data.dropna(subset=["Ssf Exp"], inplace=True)
+                self.od_data["Od600"] = self.od_data["Od600"].replace(" ", "0.0")
+                self.od_data.set_index("Harvest Well", drop=False, inplace=True)
+                # pd.DataFrame.to_csv(self.od_data, "od_data.csv")
+                self.od_data.insert(0, "Source", self.od_data["Harvest Sample Id"].apply(lambda x: x.split('-')[1]))
+                self.od_data.insert(0, "ID", self.od_data["Source"] + "-" + self.od_data["Harvest Well"], True)
+                self.od_data.set_index("ID", inplace=True)
+                print(self.od_data)
+            except KeyError:
+                messagebox.showinfo(title="Uh oh...", message="Check column headers on OD file. Have any changed?")
+                pass
         try:
             count = 0
             for plate in plates:

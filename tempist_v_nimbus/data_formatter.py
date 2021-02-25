@@ -24,6 +24,7 @@ def data_format(source, plates, volumes):
               + [f"B{str(y).zfill(2)}" for y in range(1, 13)] \
               + [f"C{str(y).zfill(2)}" for y in range(1, 13)] \
               + [f"D{str(y).zfill(2)}" for y in range(1, 13)]
+
     clean_df = pd.DataFrame()
     start_row = 0
     end_row = 8
