@@ -12,7 +12,7 @@ from modules.calculations import Calculator
 class DataParser:
     def __init__(self):
         try:
-            with open("L:/High Throughput Screening/HiPrBind/parser_helper/modules/proj_data.json") as self.proj_file:
+            with open("../proj_data.json") as self.proj_file:
                 self.contents = json.load(self.proj_file)
         except FileNotFoundError:
             print("Did not work")
