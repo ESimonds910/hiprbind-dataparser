@@ -8,9 +8,7 @@ class DataConcat:
         self.concat_data = pd.DataFrame()
 
     def data_concat(self, enspire_df, od_df):
-
-        self.concat_data = pd.concat([od_df, enspire_df], axis=1)
-        # self.concat_data = pd.merge(od_df, enspire_df, on="ID")
+        self.concat_data = od_df.join(enspire_df, how="right", lsuffix="_od", rsuffix="_enspire")
         print(self.concat_data)
         # pd.DataFrame.to_csv(self.concat_data, "merged_data.csv")
         return self.concat_data
