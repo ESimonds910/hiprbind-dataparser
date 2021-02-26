@@ -21,7 +21,7 @@ class DataParser:
             # TODO Eventually add for loop to parse multiple projects
             proj_names = [key for key in self.contents.keys()]
             for proj_name in proj_names:
-                self.proj_name = proj_name
+                self.proj_name = proj_name.split("-")[0]
                 self.plate_ids = self.contents[proj_name]["Plate IDs"]
                 self.dilutions = self.contents[proj_name]["Dilution volumes"]
                 self.raw_file_path = self.contents[proj_name]["raw_file_path"]

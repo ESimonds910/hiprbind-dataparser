@@ -34,16 +34,17 @@ class FileFinder:
             pass
         else:
             for column in self.od_data.columns:
-                self.od_data.rename(columns={column: column.title()}, inplace=True)
+                self.od_data.rename(columns={column: column.title().strip()}, inplace=True)
+            print(self.od_data.columns)
             try:
-                self.od_data.dropna(subset=["Ssf Exp"], inplace=True)
+                self.od_data.dropna(subset=["Ssf Exp", "Harvest Sample Id"], inplace=True)
                 self.od_data["Od600"] = self.od_data["Od600"].replace(" ", "0.0")
                 self.od_data.set_index("Harvest Well", drop=False, inplace=True)
                 # pd.DataFrame.to_csv(self.od_data, "od_data.csv")
                 self.od_data.insert(0, "Source", self.od_data["Harvest Sample Id"].apply(lambda x: x.split('-')[1]))
                 self.od_data.insert(0, "ID", self.od_data["Source"] + "-" + self.od_data["Harvest Well"], True)
                 self.od_data.set_index("ID", inplace=True)
-                print(self.od_data)
+                print(self.od_data.index)
             except KeyError:
                 messagebox.showinfo(title="Uh oh...", message="Check column headers on OD file. Have any changed?")
                 pass
