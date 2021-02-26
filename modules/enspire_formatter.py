@@ -17,7 +17,7 @@ class DataFormatter:
                          ]
 
     # TODO edit replicate data to same table
-    def formatter(self, all_enspire_data, all_rep_data, plate_ids, dilutions, proj_name):
+    def formatter(self, all_enspire_data, all_rep_data, plate_ids, dilutions, proj_name, std_row, std_conc):
         for plate in plate_ids:
             if len(plate) == 2 or plate.split("-")[1] == "1":
                 wl = 0
@@ -43,6 +43,10 @@ class DataFormatter:
                         display_bloc.insert(0, "Unique_Id", proj_name + "-" + display_bloc["Plate_Well_Id"])
                         display_bloc.insert(3, "row", display_bloc["Well_Id"].apply(lambda x: x[:1]))
                         display_bloc.insert(4, "col", display_bloc["Well_Id"].apply(lambda x: x[1:]))
+
+                        if std_row != "":
+                            display_bloc.insert(5, "std_conc", display_bloc["Well_Id"].apply(lambda x: std_conc[int(x[1:]) - 1] if x[:1] == std_row else ""))
+
                         display_bloc[["Volumes", "col"]] = display_bloc[["Volumes", "col"]].apply(pd.to_numeric)
                         bloc_df.insert(0, "Plate_Well_Id", bloc_df["plate"] + "-" + bloc_df["Well_Id"])
                         wl += 1

@@ -1,16 +1,16 @@
 {
-    "SSF00580": {
+    "SSF00607": {
         "plate num": 2,
-        "first rep": 0,
-        "last rep": 1,
+        "first rep": 1,
+        "last rep": 0,
         "all rep": 0,
-        "raw_file_path": "/mnt/lab/High Throughput Screening/HiPrBind/Data_Parser_Helper_Tool/Training Helper tool/Test_SSF09999/TEST_HiPr_Bind/TEST_Raw/SSF00580.csv",
+        "raw_file_path": "/mnt/lab/Molecular Sciences/Small Scale Runs/SSF00607 Discrete Strain Screening (DSS) akita Compare Chap hits side-by-side/Assays/HiPrBind/Raw/SSF00607.csv",
         "Plate IDs": [
             "P1-1",
             "P1-2"
         ],
-        "OD path": "/mnt/lab/High Throughput Screening/HiPrBind/Data_Parser_Helper_Tool/Training Helper tool/SSF00580 24DW OD.xlsx",
-        "Output path": "/mnt/lab/High Throughput Screening/HiPrBind/Data_Parser_Helper_Tool/Training Helper tool/Test_SSF09999/TEST_HiPr_Bind/TEST_Processed/SSF00580_output.xlsx",
-        "Dilution volumes": "0.35714285714285715, 0.05639097744360902, 0.006265664160401002, 0.00036856848002358837"
+        "OD path": "/mnt/lab/Molecular Sciences/Small Scale Runs/SSF00607 Discrete Strain Screening (DSS) akita Compare Chap hits side-by-side/Assays/OD/Processed/SSF00607 24DW OD.xlsx",
+        "Output path": "/mnt/lab/Molecular Sciences/Small Scale Runs/SSF00607 Discrete Strain Screening (DSS) akita Compare Chap hits side-by-side/Assays/HiPrBind/Processed/SSF00607_output.xlsx",
+        "Dilution volumes":  "0.357142857, 0.056390977, 0.006265664, 0.000368568"
     }
 }
