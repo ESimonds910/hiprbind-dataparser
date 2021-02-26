@@ -1,4 +1,5 @@
 import json
+import pandas as pd
 from tkinter import Tk
 from tkinter.messagebox import showinfo
 from modules.enspire_formatter import DataFormatter
@@ -20,6 +21,7 @@ class DataParser:
             # TODO Eventually add for loop to parse multiple projects
             proj_names = [key for key in self.contents.keys()]
             for proj_name in proj_names:
+                self.proj_name = proj_name.split("-")[0]
                 self.plate_ids = self.contents[proj_name]["Plate IDs"]
                 self.dilutions = self.contents[proj_name]["Dilution volumes"]
                 self.raw_file_path = self.contents[proj_name]["raw_file_path"]
@@ -33,9 +35,21 @@ class DataParser:
     def parse_data(self):
 
         raw_enspire_df, all_rep_enspire_df, raw_od_df = FileFinder().data_finder(self.plate_ids, self.raw_file_path, self.od_file_path)
-        formatted_enspire_df = DataFormatter().formatter(raw_enspire_df, all_rep_enspire_df, self.plate_ids)
+        formatted_enspire_df, display_ready_df = DataFormatter().formatter(
+            raw_enspire_df,
+            all_rep_enspire_df,
+            self.plate_ids,
+            self.dilutions,
+            self.proj_name
+        )
         all_concat_df = DataConcat().data_concat(formatted_enspire_df, raw_od_df)
-        Calculator(all_concat_df, self.dilutions, self.out_file_path)
+        display_concat_df = DataConcat().display_data_concat(display_ready_df, raw_od_df)
+        clean_df = Calculator().make_calculations(all_concat_df, self.dilutions)
+        print(clean_df)
+
+        with pd.ExcelWriter(f"{self.proj_name}.xlsx") as writer:
+            clean_df.to_excel(writer, sheet_name="Main_Data")
+            display_concat_df.to_excel(writer, sheet_name="Display_Ready")
 
 
 if __name__ == "__main__":
