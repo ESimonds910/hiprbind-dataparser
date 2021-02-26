@@ -33,7 +33,7 @@ class DataParser:
     def parse_data(self):
 
         raw_enspire_df, all_rep_enspire_df, raw_od_df = FileFinder().data_finder(self.plate_ids, self.raw_file_path, self.od_file_path)
-        formatted_enspire_df = DataFormatter().formatter(raw_enspire_df, all_rep_enspire_df, self.plate_ids)
+        formatted_enspire_df, display_ready_df = DataFormatter().formatter(raw_enspire_df, all_rep_enspire_df, self.plate_ids, self.dilutions)
         all_concat_df = DataConcat().data_concat(formatted_enspire_df, raw_od_df)
         Calculator(all_concat_df, self.dilutions, self.out_file_path)
 

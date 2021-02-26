@@ -16,7 +16,7 @@ class DataFormatter:
                          'H01', 'H02', 'H03', 'H04', 'H05', 'H06', 'H07', 'H08', 'H09', 'H10', 'H11', 'H12',
                          ]
 
-    def formatter(self, all_enspire_data, all_rep_data, plate_ids):
+    def formatter(self, all_enspire_data, all_rep_data, plate_ids, dilutions):
         for plate in plate_ids:
             if len(plate) == 2 or plate.split("-")[1] == "1":
                 wl = 0
@@ -29,14 +29,19 @@ class DataFormatter:
                                                 list(all_enspire_data.iloc[row][[col, col + 1]])
                                                 + list(all_enspire_data.iloc[row + 1][[col, col + 1]]) +
                                                 list(all_enspire_data.iloc[row][[dna_col_id, dna_col_id + 1]])
-                                                + list(all_enspire_data.iloc[row + 1][[dna_col_id, dna_col_id + 1]])])
+                                                + list(all_enspire_data.iloc[row + 1][[dna_col_id, dna_col_id + 1]])],
+                                               columns="plate Well_Id Alpha_1 Alpha_2 Alpha_3 Alpha_4 DNA_1 DNA_2 DNA_3 DNA_4".split())
+
                         display_bloc = pd.DataFrame([[self.well_ids[wl] for n in range(4)],
                                                          list(bloc_df.iloc[0, 2:6]),
                                                          list(bloc_df.iloc[0, 6:])],
                                                         index="Well_Id Alpha DNA".split()).transpose()
-                        display_bloc.insert(1, "plate", plate)
-                        display_bloc.insert(2, "row", display_bloc["Well_Id"].apply(lambda x: x[:1]))
-                        display_bloc.insert(3, "col", display_bloc["Well_Id"].apply(lambda x: x[2:]))
+                        display_bloc.insert(0, "plate", plate)
+                        display_bloc.insert(0, "Plate_Well_Id", display_bloc["plate"] + display_bloc["Well_Id"])
+                        display_bloc.insert(3, "row", display_bloc["Well_Id"].apply(lambda x: x[:1]))
+                        display_bloc.insert(4, "col", display_bloc["Well_Id"].apply(lambda x: x[2:]))
+                        display_bloc.insert(5, "Volumes", dilutions)
+                        bloc_df.insert(0, "Plate_Well_Id", bloc_df["plate"] + bloc_df["Well_Id"])
                         wl += 1
                         self.all_data_signals = pd.concat([self.all_data_signals, bloc_df])
                         self.display_ready_df = pd.concat([self.display_ready_df, display_bloc])
@@ -75,4 +80,4 @@ class DataFormatter:
         # pd.DataFrame.to_csv(self.all_data_signals, "data_output.csv")
         # return self.all_data_signals, self.all_rep_data_signals
         print(self.all_data_signals)
-        return self.all_data_signals
+        return self.all_data_signals, self.display_ready_df
