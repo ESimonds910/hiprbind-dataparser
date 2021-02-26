@@ -17,7 +17,7 @@ class DataFormatter:
                          ]
 
     # TODO edit replicate data to same table
-    def formatter(self, all_enspire_data, all_rep_data, plate_ids, dilutions):
+    def formatter(self, all_enspire_data, all_rep_data, plate_ids, dilutions, proj_name):
         for plate in plate_ids:
             if len(plate) == 2 or plate.split("-")[1] == "1":
                 wl = 0
@@ -39,6 +39,7 @@ class DataFormatter:
                                                         index="Well_Id Alpha DNA".split()).transpose()
                         display_bloc.insert(0, "plate", plate[:2])
                         display_bloc.insert(0, "Plate_Well_Id", display_bloc["plate"] + "-" + display_bloc["Well_Id"])
+                        display_bloc.insert(0, "Unique_Id", proj_name + "-" + display_bloc["Plate_Well_Id"])
                         display_bloc.insert(3, "row", display_bloc["Well_Id"].apply(lambda x: x[:1]))
                         display_bloc.insert(4, "col", display_bloc["Well_Id"].apply(lambda x: x[2:]))
                         display_bloc.insert(5, "Volumes", dilutions)
