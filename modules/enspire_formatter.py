@@ -34,15 +34,16 @@ class DataFormatter:
                                                columns="plate Well_Id Alpha_1 Alpha_2 Alpha_3 Alpha_4 DNA_1 DNA_2 DNA_3 DNA_4".split())
 
                         display_bloc = pd.DataFrame([[self.well_ids[wl] for n in range(4)],
-                                                         list(bloc_df.iloc[0, 2:6]),
-                                                         list(bloc_df.iloc[0, 6:])],
-                                                        index="Well_Id Alpha DNA".split()).transpose()
+                                                     dilutions.split(","),
+                                                     list(bloc_df.iloc[0, 2:6]),
+                                                     list(bloc_df.iloc[0, 6:])],
+                                                    index="Well_Id Volumes Alpha DNA".split()).transpose()
                         display_bloc.insert(0, "plate", plate[:2])
                         display_bloc.insert(0, "Plate_Well_Id", display_bloc["plate"] + "-" + display_bloc["Well_Id"])
                         display_bloc.insert(0, "Unique_Id", proj_name + "-" + display_bloc["Plate_Well_Id"])
                         display_bloc.insert(3, "row", display_bloc["Well_Id"].apply(lambda x: x[:1]))
-                        display_bloc.insert(4, "col", display_bloc["Well_Id"].apply(lambda x: x[2:]))
-                        display_bloc.insert(5, "Volumes", dilutions)
+                        display_bloc.insert(4, "col", display_bloc["Well_Id"].apply(lambda x: x[1:]))
+                        display_bloc[["Volumes", "col"]] = display_bloc[["Volumes", "col"]].apply(pd.to_numeric)
                         bloc_df.insert(0, "Plate_Well_Id", bloc_df["plate"] + "-" + bloc_df["Well_Id"])
                         wl += 1
                         self.all_data_signals = pd.concat([self.all_data_signals, bloc_df])

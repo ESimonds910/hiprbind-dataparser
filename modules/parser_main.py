@@ -1,4 +1,5 @@
 import json
+import pandas as pd
 from tkinter import Tk
 from tkinter.messagebox import showinfo
 from modules.enspire_formatter import DataFormatter
@@ -43,7 +44,12 @@ class DataParser:
         )
         all_concat_df = DataConcat().data_concat(formatted_enspire_df, raw_od_df)
         display_concat_df = DataConcat().display_data_concat(display_ready_df, raw_od_df)
-        Calculator(all_concat_df, self.dilutions, self.out_file_path)
+        clean_df = Calculator().make_calculations(all_concat_df, self.dilutions)
+        print(clean_df)
+
+        with pd.ExcelWriter(f"{self.proj_name}.xlsx") as writer:
+            clean_df.to_excel(writer, sheet_name="Main_Data")
+            display_concat_df.to_excel(writer, sheet_name="Display_Ready")
 
 
 if __name__ == "__main__":
