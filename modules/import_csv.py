@@ -20,7 +20,7 @@ class FileFinder:
         self.all_rep_data = pd.DataFrame()
         self.od_data = pd.DataFrame()
 
-    def data_finder(self, plates, input_raw_path, input_od_path):
+    def data_finder(self, plates, input_raw_path, input_od_path, standard_row):
         print(input_od_path)
         all_alpha_data = pd.DataFrame()
         all_dna_data = pd.DataFrame()
@@ -44,6 +44,7 @@ class FileFinder:
                 self.od_data.insert(0, "Source", self.od_data["Harvest Sample Id"].apply(lambda x: x.split('-')[1]))
                 self.od_data.insert(0, "ID", self.od_data["Source"] + "-" + self.od_data["Harvest Well"], True)
                 self.od_data.set_index("ID", inplace=True)
+                self.od_data.loc[(self.od_data["Harvest Well"].apply(lambda x: x[:1]) == standard_row), "Sample Type"] = "Standard"
                 print(self.od_data.index)
             except KeyError:
                 messagebox.showinfo(title="Uh oh...", message="Check column headers on OD file. Have any changed?")

@@ -30,17 +30,21 @@ class DataParser:
                 self.od_file_path = self.od_file_path.replace("/mnt/lab", "L:")
                 self.out_file_path = self.contents[proj_name]["Output path"]
                 self.out_file_path = self.out_file_path.replace("/mnt/lab", "L:")
+                self.standard_row = "H"
+                self.standard_conc = [100, 50, 16.7, 5.6, 1.9, 0.6] * 2
                 self.parse_data()
 
     def parse_data(self):
 
-        raw_enspire_df, all_rep_enspire_df, raw_od_df = FileFinder().data_finder(self.plate_ids, self.raw_file_path, self.od_file_path)
+        raw_enspire_df, all_rep_enspire_df, raw_od_df = FileFinder().data_finder(self.plate_ids, self.raw_file_path, self.od_file_path, self.standard_row)
         formatted_enspire_df, display_ready_df = DataFormatter().formatter(
             raw_enspire_df,
             all_rep_enspire_df,
             self.plate_ids,
             self.dilutions,
-            self.proj_name
+            self.proj_name,
+            self.standard_row,
+            self.standard_conc
         )
         all_concat_df = DataConcat().data_concat(formatted_enspire_df, raw_od_df)
         display_concat_df = DataConcat().display_data_concat(display_ready_df, raw_od_df)
