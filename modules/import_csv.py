@@ -18,37 +18,14 @@ class FileFinder:
         self.window.destroy()
         self.all_data = pd.DataFrame()
         self.all_rep_data = pd.DataFrame()
-        self.od_data = pd.DataFrame()
 
-    def data_finder(self, plates, input_raw_path, input_od_path, standard_row):
-        print(input_od_path)
+    def data_finder(self, plates, input_raw_path, standard_row):
+
         all_alpha_data = pd.DataFrame()
         all_dna_data = pd.DataFrame()
         replicate_alpha_data = pd.DataFrame()
         replicate_dna_data = pd.DataFrame()
-        try:
-            self.od_data = pd.read_excel(input_od_path)
 
-        except FileNotFoundError:
-            messagebox.showinfo(title="Uh oh...", message="Something's wrong. The OD file wasn't found.")
-            pass
-        else:
-            for column in self.od_data.columns:
-                self.od_data.rename(columns={column: column.title().strip()}, inplace=True)
-            print(self.od_data.columns)
-            try:
-                self.od_data.dropna(subset=["Ssf Exp", "Harvest Sample Id"], inplace=True)
-                self.od_data["Od600"] = self.od_data["Od600"].replace(" ", "0.0")
-                self.od_data.set_index("Harvest Well", drop=False, inplace=True)
-                # pd.DataFrame.to_csv(self.od_data, "od_data.csv")
-                self.od_data.insert(0, "Source", self.od_data["Harvest Sample Id"].apply(lambda x: x.split('-')[1]))
-                self.od_data.insert(0, "ID", self.od_data["Source"] + "-" + self.od_data["Harvest Well"], True)
-                self.od_data.set_index("ID", inplace=True)
-                self.od_data.loc[(self.od_data["Harvest Well"].apply(lambda x: x[:1]) == standard_row), "Sample Type"] = "Standard"
-                print(self.od_data.index)
-            except KeyError:
-                messagebox.showinfo(title="Uh oh...", message="Check column headers on OD file. Have any changed?")
-                pass
         try:
             count = 0
             for plate in plates:
@@ -93,7 +70,7 @@ class FileFinder:
             self.all_data = pd.concat([all_alpha_data, all_dna_data], axis=1)
             self.all_rep_data = pd.concat([replicate_alpha_data, replicate_dna_data], axis=1)
 
-            return self.all_data, self.all_rep_data, self.od_data
+            return self.all_data, self.all_rep_data
 
 
 if __name__ == "__main__":

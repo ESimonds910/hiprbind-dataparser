@@ -49,13 +49,14 @@ class DataFormatter:
 
                         display_bloc[["Volumes", "col"]] = display_bloc[["Volumes", "col"]].apply(pd.to_numeric)
                         bloc_df.insert(0, "Plate_Well_Id", bloc_df["plate"] + "-" + bloc_df["Well_Id"])
+                        bloc_df.insert(0, "Unique_Id", proj_name + "-" + bloc_df["Plate_Well_Id"])
                         wl += 1
                         self.all_data_signals = pd.concat([self.all_data_signals, bloc_df])
                         self.display_ready_df = pd.concat([self.display_ready_df, display_bloc])
 
                 print(self.all_data_signals)
                 print(self.display_ready_df)
-        self.all_data_signals.set_index("Plate_Well_Id", inplace=True)
+        self.all_data_signals.set_index("Unique_Id", inplace=True)
             # if data_signals_list:
             #     data_signals_df = pd.DataFrame(
             #         data_signals_list,
