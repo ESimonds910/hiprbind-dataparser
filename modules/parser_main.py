@@ -1,6 +1,7 @@
 import json
 import pandas as pd
 from tkinter import Tk
+import import_od as od
 from tkinter.messagebox import showinfo
 from modules.enspire_formatter import DataFormatter
 from modules.import_csv import FileFinder
@@ -36,7 +37,8 @@ class DataParser:
 
     def parse_data(self):
 
-        raw_enspire_df, all_rep_enspire_df, raw_od_df = FileFinder().data_finder(self.plate_ids, self.raw_file_path, self.od_file_path, self.standard_row)
+        raw_od_df = od.import_od(self.od_file_path, self.standard_row)
+        raw_enspire_df, all_rep_enspire_df = FileFinder().data_finder(self.plate_ids, self.raw_file_path, self.standard_row)
         formatted_enspire_df, display_ready_df = DataFormatter().formatter(
             raw_enspire_df,
             all_rep_enspire_df,
