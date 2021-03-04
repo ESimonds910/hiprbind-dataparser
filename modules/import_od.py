@@ -33,7 +33,7 @@ def import_od(input_od_path, standard_row):
             od_data.dropna(axis=1, how="all", inplace=True)
             od_data["Od600"] = od_data["Od600"].replace(" ", "0.0")
             od_data.set_index("Harvest_Sample_Id", drop=False, inplace=True)
-            od_data.loc[(od_data["Harvest_Well"].apply(lambda x: x[:1]) == standard_row), "Sample_Type"] = "Standard"
+
         finally:
             print(od_data["Od600"])
             return od_data

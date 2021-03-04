@@ -26,18 +26,19 @@ class DataParser:
                 self.plate_ids = self.contents[proj_name]["Plate IDs"]
                 self.dilutions = self.contents[proj_name]["Dilution volumes"]
                 self.raw_file_path = self.contents[proj_name]["raw_file_path"]
-                self.raw_file_path = self.raw_file_path.replace("/mnt/lab", "L:")
+                # self.raw_file_path = self.raw_file_path.replace("/mnt/lab", "L:")
                 self.od_file_path = self.contents[proj_name]["OD path"]
-                self.od_file_path = self.od_file_path.replace("/mnt/lab", "L:")
+                # self.od_file_path = self.od_file_path.replace("/mnt/lab", "L:")
                 self.out_file_path = self.contents[proj_name]["Output path"]
-                self.out_file_path = self.out_file_path.replace("/mnt/lab", "L:")
+                # self.out_file_path = self.out_file_path.replace("/mnt/lab", "L:")
                 self.standard_row = "H"
-                self.standard_conc = [100, 50, 16.7, 5.6, 1.9, 0.6] * 2
+                self.standard_conc = [24, 8.0, 2.7, 0.9, 0.3, 0.1] * 2
                 self.parse_data()
 
     def parse_data(self):
 
         raw_od_df = od.import_od(self.od_file_path, self.standard_row)
+
         raw_enspire_df, all_rep_enspire_df = FileFinder().data_finder(self.plate_ids, self.raw_file_path, self.standard_row)
         formatted_enspire_df, display_ready_df = DataFormatter().formatter(
             raw_enspire_df,
@@ -48,8 +49,8 @@ class DataParser:
             self.standard_row,
             self.standard_conc
         )
-        all_concat_df = DataConcat().data_concat(formatted_enspire_df, raw_od_df)
-        display_concat_df = DataConcat().display_data_concat(display_ready_df, raw_od_df)
+        all_concat_df = DataConcat().data_concat(formatted_enspire_df, raw_od_df, self.standard_row)
+        display_concat_df = DataConcat().display_data_concat(display_ready_df, raw_od_df, self.standard_row)
         clean_df = Calculator().make_calculations(all_concat_df, self.dilutions)
         print(clean_df)
 

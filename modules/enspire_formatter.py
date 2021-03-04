@@ -54,8 +54,6 @@ class DataFormatter:
                         self.all_data_signals = pd.concat([self.all_data_signals, bloc_df])
                         self.display_ready_df = pd.concat([self.display_ready_df, display_bloc])
 
-                print(self.all_data_signals)
-                print(self.display_ready_df)
         self.all_data_signals.set_index("Unique_Id", inplace=True)
             # if data_signals_list:
             #     data_signals_df = pd.DataFrame(
@@ -89,5 +87,4 @@ class DataFormatter:
 
         # pd.DataFrame.to_csv(self.all_data_signals, "data_output.csv")
         # return self.all_data_signals, self.all_rep_data_signals
-        print(self.all_data_signals)
         return self.all_data_signals, self.display_ready_df
