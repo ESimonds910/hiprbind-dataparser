@@ -40,7 +40,6 @@ class Calculator:
         col_list = set(list(self.clean_df.columns))
         drop_cols = ["Source", "Ssf Exp", "Induction Plate", "Induction Well", "Seed Plate", "Seed Well",
                      "Harvest Plate", "Harvest Well", "Well ID"]
-        print(col_list)
         for col in drop_cols:
             if col in col_list:
                 self.clean_df.drop(columns=col, inplace=True)

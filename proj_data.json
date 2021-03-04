@@ -8,7 +8,7 @@
         "Plate IDs": [
             "P1"
         ],
-        "OD path": "L:/Molecular Sciences/Small Scale Runs/SSF00609a Discrete Strain Screening (DSS) v1.5 Repeat of old SSF00603 DSS reference sequence into 3 hosts 25C 24 hours/Assays/OD/Processed/SSF00609a 24DW OD.xlsx",
+        "OD path": "L:/Molecular Sciences/Small Scale Runs/SSF00609a Discrete Strain Screening (DSS) v1.5 Repeat of old SSF00603 DSS reference sequence into 3 hosts 25C 24 hours/SSF00609a Discrete Strain Screening (DSS) ELN v1.5.xlsm",
         "Output path": "L:/Molecular Sciences/Small Scale Runs/SSF00609a Discrete Strain Screening (DSS) v1.5 Repeat of old SSF00603 DSS reference sequence into 3 hosts 25C 24 hours/Assays/HiPrBind/Processed/SSF00609-a-CD19_output.xlsx",
         "Dilution volumes":  "0.86, 0.19, 0.03, 0.003"
     },
@@ -21,7 +21,7 @@
         "Plate IDs": [
             "P1"
         ],
-        "OD path": "L:/Molecular Sciences/Small Scale Runs/SSF00609a Discrete Strain Screening (DSS) v1.5 Repeat of old SSF00603 DSS reference sequence into 3 hosts 25C 24 hours/Assays/OD/Processed/SSF00609a 24DW OD.xlsx",
+        "OD path": "L:/Molecular Sciences/Small Scale Runs/SSF00609a Discrete Strain Screening (DSS) v1.5 Repeat of old SSF00603 DSS reference sequence into 3 hosts 25C 24 hours/SSF00609a Discrete Strain Screening (DSS) ELN v1.5.xlsm",
         "Output path": "L:/Molecular Sciences/Small Scale Runs/SSF00609a Discrete Strain Screening (DSS) v1.5 Repeat of old SSF00603 DSS reference sequence into 3 hosts 25C 24 hours/Assays/HiPrBind/Processed/SSF00609-a-ULBP2_output.xlsx",
         "Dilution volumes":  "0.86, 0.19, 0.03, 0.003"
     },
@@ -34,7 +34,7 @@
         "Plate IDs": [
             "P1"
         ],
-        "OD path": "L:/Molecular Sciences/Small Scale Runs/SSF00609b Discrete Strain Screening (DSS) v1.5 Repeat of old SSF00603 DSS reference sequence into 3 hosts 21C 44 hours/Assays/OD/Processed/SSF00609b Processed OD.xlsx",
+        "OD path": "L:/Molecular Sciences/Small Scale Runs/SSF00609b Discrete Strain Screening (DSS) v1.5 Repeat of old SSF00603 DSS reference sequence into 3 hosts 21C 44 hours/SSF00609b Discrete Strain Screening (DSS) ELN v1.5.xlsm",
         "Output path": "L:/Molecular Sciences/Small Scale Runs/SSF00609b Discrete Strain Screening (DSS) v1.5 Repeat of old SSF00603 DSS reference sequence into 3 hosts 21C 44 hours/Assays/HiPrBind/Processed/SSF00609-b-CD19_output.xlsx",
         "Dilution volumes":  "0.86, 0.19, 0.03, 0.003"
     },
@@ -47,7 +47,7 @@
         "Plate IDs": [
             "P1"
         ],
-        "OD path": "L:/Molecular Sciences/Small Scale Runs/SSF00609b Discrete Strain Screening (DSS) v1.5 Repeat of old SSF00603 DSS reference sequence into 3 hosts 21C 44 hours/Assays/OD/Processed/SSF00609b Processed OD.xlsx",
+        "OD path": "L:/Molecular Sciences/Small Scale Runs/SSF00609b Discrete Strain Screening (DSS) v1.5 Repeat of old SSF00603 DSS reference sequence into 3 hosts 21C 44 hours/SSF00609b Discrete Strain Screening (DSS) ELN v1.5.xlsm",
         "Output path": "L:/Molecular Sciences/Small Scale Runs/SSF00609b Discrete Strain Screening (DSS) v1.5 Repeat of old SSF00603 DSS reference sequence into 3 hosts 21C 44 hours/Assays/HiPrBind/Processed/SSF00609-b-ulbp2_output.xlsx",
         "Dilution volumes":  "0.86, 0.19, 0.03, 0.003"
     }
