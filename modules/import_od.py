@@ -35,7 +35,6 @@ def import_od(input_od_path, standard_row):
             od_data.set_index("Harvest_Sample_Id", drop=False, inplace=True)
 
         finally:
-            print(od_data["Od600"])
             return od_data
 
 

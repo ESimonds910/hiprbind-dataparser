@@ -29,7 +29,6 @@ class FileFinder:
         try:
             count = 0
             for plate in plates:
-                print(plate)
                 new_alpha_data = pd.read_csv(
                     input_raw_path,
                     header=None,

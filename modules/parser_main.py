@@ -23,6 +23,7 @@ class DataParser:
             proj_names = [key for key in self.contents.keys()]
             for proj_name in proj_names:
                 self.proj_name = proj_name.split("-")[0]
+                self.test_output_name = proj_name
                 self.plate_ids = self.contents[proj_name]["Plate IDs"]
                 self.dilutions = self.contents[proj_name]["Dilution volumes"]
                 self.raw_file_path = self.contents[proj_name]["raw_file_path"]
@@ -52,9 +53,8 @@ class DataParser:
         all_concat_df = DataConcat().data_concat(formatted_enspire_df, raw_od_df, self.standard_row)
         display_concat_df = DataConcat().display_data_concat(display_ready_df, raw_od_df, self.standard_row)
         clean_df = Calculator().make_calculations(all_concat_df, self.dilutions)
-        print(clean_df)
 
-        with pd.ExcelWriter(f"{self.proj_name}.xlsx") as writer:
+        with pd.ExcelWriter(f"{self.test_output_name}.xlsx") as writer:
             clean_df.to_excel(writer, sheet_name="Main_Data")
             display_concat_df.to_excel(writer, sheet_name="Display_Ready")
 

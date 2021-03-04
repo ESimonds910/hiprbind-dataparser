@@ -3,10 +3,8 @@ import pandas as pd
 
 def eln_cols(od_df):
     try:
-        print(od_df.columns)
         od_cols = od_df[["Sample_Type", "Harvest_Sample_Id", "Strain_Id"]]
         od_cols.set_index("Harvest_Sample_Id", inplace=True)
-        print(od_cols)
     except KeyError:
         print("Something has gone wrong with the column names")
     else:
@@ -21,7 +19,6 @@ class DataConcat:
 
     def data_concat(self, enspire_df, od_df, standard_row):
         self.concat_data = od_df.join(enspire_df, how="right", lsuffix="_od", rsuffix="_enspire")
-        print(self.concat_data)
         self.concat_data.loc[(self.concat_data["Well_Id"].apply(lambda x: x[:1]) == standard_row), "Sample Type"] = "Standard"
         # pd.DataFrame.to_csv(self.concat_data, "merged_data.csv")
         return self.concat_data
