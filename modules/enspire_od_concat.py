@@ -23,7 +23,7 @@ class DataConcat:
             od_cols = od_df[["Sample_type", "Harvest_sample_id", "Strain_id", "Induction_temp"]]
             od_cols.set_index("Harvest_sample_id", inplace=True)
         except KeyError:
-            print("Unexpected error with column header name.")
+            print("Unexpected error with od file column header name.")
             pass
         else:
             display_data.set_index("Unique_Id", inplace=True)
