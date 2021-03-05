@@ -2,6 +2,18 @@ import pandas as pd
 from tkinter import messagebox
 
 
+def header_check(columns):
+    try:
+        eln_headers = pd.read_excel("test_files/ELN_headers.xlsx", header=None)
+    except FileNotFoundError:
+        print("File not found")
+        pass
+    else:
+        for column in columns:
+            if column not in list(eln_headers[0]):
+                print(f"'{column}' does not match SSF Database Nomenclature.")
+
+
 def import_od(input_od_path):
     try:
         od_data = pd.read_excel(input_od_path, sheet_name="Growth Details")
@@ -17,10 +29,12 @@ def import_od(input_od_path):
     finally:
         try:
             for column in od_data.columns:
+                print(column)
                 if " " in column:
                     new_column = column.strip().replace(" ", "_").lower().capitalize()
                 else:
                     new_column = column.strip().lower().capitalize()
+                print(new_column)
                 od_data.rename(columns={column: new_column}, inplace=True)
             od_data.dropna(thresh=3, subset=od_data.columns[:-1], inplace=True)
             od_data.dropna(axis=1, how="all", inplace=True)
@@ -35,10 +49,13 @@ def import_od(input_od_path):
             print(f"Parser was looking for column '{col_header}', but was not found. Check file for missing column.")
             pass
         else:
+            # header_check(od_data.columns)
             return od_data
 
 
 if __name__ == "__main__":
+    from time import time
+    start_time = time()
     # ELN file path
     od_file_path = r"L:\Molecular Sciences\Small Scale Runs\SSF00609b Discrete Strain Screening (DSS) v1.5 Repeat of" \
                    r" old SSF00603 DSS reference sequence into 3 hosts 21C 44 hours\SSF00609b Discrete" \
@@ -49,3 +66,6 @@ if __name__ == "__main__":
     #                "Chap hits side-by-side/Assays/OD/Processed/SSF00607 24DW OD.xlsx "
 
     import_od(od_file_path)
+    end_time = time()
+    run_time = end_time - start_time
+    print(f"Run time: {run_time}")
