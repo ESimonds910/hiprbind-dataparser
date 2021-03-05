@@ -20,6 +20,7 @@ def data_format(source, plates, volumes):
             bloc_df.insert(0, "Plate", source.iloc[row]["Plate"])
             clean_df = pd.concat([clean_df, bloc_df])
     clean_df.to_csv("Output.csv")
+    # 8pt dataframe
     well_id = [f"A{str(y).zfill(2)}" for y in range(1, 13)] \
               + [f"B{str(y).zfill(2)}" for y in range(1, 13)] \
               + [f"C{str(y).zfill(2)}" for y in range(1, 13)] \

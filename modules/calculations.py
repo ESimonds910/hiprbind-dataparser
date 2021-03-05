@@ -17,21 +17,21 @@ class Calculator:
         for n in range(1, 4):
             self.clean_df[f"alpha_slope_{n}"] = round((self.clean_df[f"Alpha_{n + 1}"] - self.clean_df[f"Alpha_{n}"]) /
                                                       (dilution_volumes[n] - dilution_volumes[n - 1]), 2)
-        self.clean_df["max_alpha_slope"] = self.clean_df[
+        self.clean_df["Alpha.Max.Slope"] = self.clean_df[
             ["alpha_slope_1", "alpha_slope_2", "alpha_slope_3"]
         ].max(axis=1)
 
         for n in range(1, 4):
             self.clean_df[f"dna_slope_{n}"] = round((self.clean_df[f"DNA_{n + 1}"] - self.clean_df[f"DNA_{n}"]) /
                                                     (dilution_volumes[n] - dilution_volumes[n - 1]), 2)
-        self.clean_df["max_dna_slope"] = self.clean_df[
+        self.clean_df["DNA.Max.Slope"] = self.clean_df[
             ["dna_slope_1", "dna_slope_2", "dna_slope_3"]
         ].max(axis=1)
 
-        self.clean_df["max_alpha_slope/max_dna_slope"] = round(self.clean_df["max_alpha_slope"] /
-                                                               self.clean_df["max_dna_slope"], 2)
+        self.clean_df["HPB_DNA"] = round(self.clean_df["Alpha.Max.Slope"] /
+                                                               self.clean_df["DNA.Max.Slope"], 2)
 
-        self.clean_df["max_alpha_slope/OD"] = round(self.clean_df["max_alpha_slope"] / self.clean_df["Od600"], 2)
+        self.clean_df["HPB_OD"] = round(self.clean_df["Alpha.Max.Slope"] / self.clean_df["Od600"], 2)
 
         self.file_cleanup()
         return self.clean_df

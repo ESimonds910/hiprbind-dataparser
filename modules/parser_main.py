@@ -8,8 +8,6 @@ from modules.import_csv import FileFinder
 from modules.enspire_od_concat import DataConcat
 from modules.calculations import Calculator
 
-# TODO Import JSON file to use data
-
 
 class DataParser:
     def __init__(self):
@@ -19,7 +17,6 @@ class DataParser:
         except FileNotFoundError:
             print("Did not work")
         else:
-            # TODO Eventually add for loop to parse multiple projects
             proj_names = [key for key in self.contents.keys()]
             for proj_name in proj_names:
                 self.proj_name = proj_name.split("-")[0]
