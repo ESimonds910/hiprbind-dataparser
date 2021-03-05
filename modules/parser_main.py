@@ -35,7 +35,7 @@ class DataParser:
 
     def parse_data(self):
 
-        raw_od_df = od.import_od(self.od_file_path, self.standard_row)
+        raw_od_df = od.import_od(self.od_file_path)
 
         raw_enspire_df, all_rep_enspire_df = FileFinder().data_finder(self.plate_ids, self.raw_file_path, self.standard_row)
         formatted_enspire_df, display_ready_df = DataFormatter().formatter(
