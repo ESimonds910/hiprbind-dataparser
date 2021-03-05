@@ -29,12 +29,10 @@ def import_od(input_od_path):
     finally:
         try:
             for column in od_data.columns:
-                print(column)
                 if " " in column:
                     new_column = column.strip().replace(" ", "_").lower().capitalize()
                 else:
                     new_column = column.strip().lower().capitalize()
-                print(new_column)
                 od_data.rename(columns={column: new_column}, inplace=True)
             od_data.dropna(thresh=3, subset=od_data.columns[:-1], inplace=True)
             od_data.dropna(axis=1, how="all", inplace=True)
