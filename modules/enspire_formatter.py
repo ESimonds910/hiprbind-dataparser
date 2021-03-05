@@ -26,6 +26,7 @@ class DataFormatter:
                     end_col = int(all_enspire_data.shape[1] / 2)
                     for col in range(1, end_col, 2):
                         dna_col_id = col + 24
+                        # For main tab with calculations
                         bloc_df = pd.DataFrame([[plate[:2]] + [self.well_ids[wl]] +
                                                 list(all_enspire_data.iloc[row][[col, col + 1]])
                                                 + list(all_enspire_data.iloc[row + 1][[col, col + 1]]) +
@@ -33,6 +34,7 @@ class DataFormatter:
                                                 + list(all_enspire_data.iloc[row + 1][[dna_col_id, dna_col_id + 1]])],
                                                columns="plate Well_Id Alpha_1 Alpha_2 Alpha_3 Alpha_4 DNA_1 DNA_2 DNA_3 DNA_4".split())
 
+                        # For display ready tab
                         display_bloc = pd.DataFrame([[self.well_ids[wl] for n in range(4)],
                                                      dilutions.split(","),
                                                      list(bloc_df.iloc[0, 2:6]),
@@ -45,7 +47,13 @@ class DataFormatter:
                         display_bloc.insert(4, "col", display_bloc["Well_Id"].apply(lambda x: x[1:]))
 
                         if std_row != "":
-                            display_bloc.insert(5, "std_conc", display_bloc["Well_Id"].apply(lambda x: std_conc[int(x[1:]) - 1] if x[:1] == std_row else ""))
+                            display_bloc.insert(
+                                5,
+                                "std_conc",
+                                display_bloc["Well_Id"].apply(
+                                    lambda x: std_conc[int(x[1:]) - 1] if x[:1] == std_row else ""
+                                )
+                            )
 
                         display_bloc[["Volumes", "col"]] = display_bloc[["Volumes", "col"]].apply(pd.to_numeric)
                         bloc_df.insert(0, "Plate_Well_Id", bloc_df["plate"] + "-" + bloc_df["Well_Id"])
@@ -55,33 +63,6 @@ class DataFormatter:
                         self.display_ready_df = pd.concat([self.display_ready_df, display_bloc])
 
         self.all_data_signals.set_index("Unique_Id", inplace=True)
-            # if data_signals_list:
-            #     data_signals_df = pd.DataFrame(
-            #         data_signals_list,
-            #         index=[x + 1 for x in range(len(data_signals_list))],
-            #         columns="Alpha_1 Alpha_2 Alpha_3 Alpha_4 DNA_1 DNA_2 DNA_3 DNA_4".split()
-            #     )
-            #
-            #     pd.DataFrame.to_csv(display_bloc, "Display_Ready.csv")
-            #     data_signals_df.insert(0, "Well ID", self.well_ids, True)
-            #     data_signals_df.insert(1, "Source", plate[:2], True)
-            #     data_signals_df.insert(2, "Plate", plate, True)
-            #     data_signals_df.insert(0, "ID", data_signals_df["Source"] + "-" + data_signals_df["Well ID"], True)
-            #     data_signals_df.set_index("ID", inplace=True)
-            #     self.all_data_signals = pd.concat([self.all_data_signals, data_signals_df])
-            #     # pd.DataFrame.to_csv(self.all_data_signals, "all_data_df.csv")
-            # else:
-            #     rep_data_signals_df = pd.DataFrame(
-            #         rep_data_signals_list,
-            #         index=[x + 1 for x in range(len(rep_data_signals_list))],
-            #         columns="Alpha_1 Alpha_2 Alpha_3 Alpha_4 DNA_1 DNA_2 DNA_3 DNA_4".split()
-            #     )
-            #
-            #     rep_data_signals_df.insert(0, "Well ID", self.well_ids, True)
-            #     rep_data_signals_df.insert(1, "Source", plate[:2], True)
-            #     rep_data_signals_df.insert(2, "Plate", plate, True)
-            #     rep_data_signals_df.insert(0, "ID", rep_data_signals_df["Source"] +
-            #                                "-" + rep_data_signals_df["Well ID"], True)
 
                 # TODO Need to create rep dataframes
 
