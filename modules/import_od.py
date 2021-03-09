@@ -22,7 +22,16 @@ def import_od(input_od_path):
         pass
     except KeyError:
         try:
+            print("ran here")
             od_data = pd.read_excel(input_od_path)
+        except FileNotFoundError:
+            messagebox.showinfo(title="Uh oh...", message="Something's wrong. The OD file wasn't found.")
+            pass
+    except ValueError:
+        try:
+            print("ran valueerror")
+            od_data = pd.read_csv(input_od_path)
+            print(od_data)
         except FileNotFoundError:
             messagebox.showinfo(title="Uh oh...", message="Something's wrong. The OD file wasn't found.")
             pass
@@ -46,7 +55,7 @@ def import_od(input_od_path):
         except KeyError:
             print(f"Parser was looking for column '{col_header}', but was not found. Check file for missing column.")
             pass
-        else:
+        finally:
             # header_check(od_data.columns)
             return od_data
 
