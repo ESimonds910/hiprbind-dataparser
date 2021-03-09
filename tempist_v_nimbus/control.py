@@ -56,8 +56,9 @@ def run_main():
     complete_df = eight_pt_calculations.make_calculations(main_concat_df, volumes)
 
     with pd.ExcelWriter(f"{proj_name}.xlsx") as writer:
-        clean_concat_df.to_excel(writer, sheet_name="Display_Ready")
         complete_df.to_excel(writer, sheet_name="Calculations")
+        clean_concat_df.to_excel(writer, sheet_name="Display_Ready")
+
 
 if __name__ == "__main__":
     run_main()

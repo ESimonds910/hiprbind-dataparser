@@ -86,6 +86,8 @@ def data_format(source, plates, volumes, std_row, std_conc):
                         )
                     )
                 bloc_df.insert(3, "Volumes", volumes)
+                bloc_df.insert(2, "Row", bloc_df["Well_Id"].apply(lambda x: x[:1]))
+                bloc_df.insert(3, "Col", bloc_df["Well_Id"].apply(lambda x: x[1:]))
                 bloc_df.insert(0, "Id", bloc_df["Plate"] + "-" + bloc_df["Well_Id"])
                 bloc_df.insert(0, "Unique_Id", "SOM00001-" + bloc_df["Id"])
                 main_df.insert(0, "Unique_Id", "SOM00001-" + main_df["plate"] + "-" + main_df["Well_Id"])
