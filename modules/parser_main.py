@@ -19,7 +19,12 @@ class DataParser:
         else:
             proj_names = [key for key in self.contents.keys()]
             for proj_name in proj_names:
-                self.proj_name = proj_name.split("-")[0]
+                if "-" in proj_name:
+                    proj_name_split = proj_name.split("-")
+                    self.proj_name = proj_name_split[0]
+                    self.ab_name = proj_name_split[-1]
+                else:
+                    self.proj_name = proj_name
                 self.test_output_name = proj_name
                 self.plate_ids = self.contents[proj_name]["Plate IDs"]
                 self.dilutions = self.contents[proj_name]["Dilution volumes"]
@@ -35,9 +40,13 @@ class DataParser:
 
     def parse_data(self):
 
-        raw_od_df = od.import_od(self.od_file_path, self.standard_row)
+        raw_od_df = od.import_od(self.od_file_path)
 
-        raw_enspire_df, all_rep_enspire_df = FileFinder().data_finder(self.plate_ids, self.raw_file_path, self.standard_row)
+        raw_enspire_df, all_rep_enspire_df = FileFinder().data_finder(
+            self.plate_ids,
+            self.raw_file_path,
+            self.standard_row
+        )
         formatted_enspire_df, display_ready_df = DataFormatter().formatter(
             raw_enspire_df,
             all_rep_enspire_df,
@@ -45,13 +54,26 @@ class DataParser:
             self.dilutions,
             self.proj_name,
             self.standard_row,
-            self.standard_conc
+            self.standard_conc,
         )
-        all_concat_df = DataConcat().data_concat(formatted_enspire_df, raw_od_df, self.standard_row)
-        display_concat_df = DataConcat().display_data_concat(display_ready_df, raw_od_df, self.standard_row)
-        clean_df = Calculator().make_calculations(all_concat_df, self.dilutions)
+        all_concat_df = DataConcat().data_concat(
+            formatted_enspire_df,
+            raw_od_df,
+            self.standard_row,
+            self.ab_name
+        )
+        display_concat_df = DataConcat().display_data_concat(
+            display_ready_df,
+            raw_od_df,
+            self.standard_row,
+            self.ab_name
+        )
+        clean_df = Calculator().make_calculations(
+            all_concat_df,
+            self.dilutions
+        )
 
-        with pd.ExcelWriter(f"{self.test_output_name}.xlsx") as writer:
+        with pd.ExcelWriter(f"test_files/{self.test_output_name}_abtest.xlsx") as writer:
             clean_df.to_excel(writer, sheet_name="Main_Data")
             display_concat_df.to_excel(writer, sheet_name="Display_Ready")
 
