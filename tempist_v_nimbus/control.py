@@ -26,6 +26,7 @@ def run_main():
 
     # This data will be used for testing
     std_row = "D"
+    std_pos = "half"
     std_conc = [100, 50, 16.7, 5.6, 1.9, 0.6] * 2
     # plates = "P1 P2 P3 P4 P5 P6".split()
     volumes = [0.21428571, 0.03061224, 0.00437318, 0.00062474, 0.00008925, 0.00001275, 0.00000182, 0.00000026]
@@ -37,19 +38,31 @@ def run_main():
 
     source_df, rep_df = file_finder.data_finder(plates, raw_enpsire_path, std_row)
 
-    clean_df, main_df = data_formatter.data_format(source_df, plates, volumes, std_row, std_conc)
+    clean_df, main_df = data_formatter.data_format(source_df, plates, volumes, std_row, std_conc, std_pos)
 
     clean_df.set_index("Unique_Id", inplace=True)
     raw_od.set_index("Harvest_id", drop=False, inplace=True)
     clean_concat_df = raw_od.join(clean_df, how="right")
-    clean_concat_df.loc[
-        (clean_concat_df["Well_Id"].apply(lambda x: x[:1]) == std_row), "Abs_id"
-    ] = "Standard"
+    if std_pos == 'half':
+        clean_concat_df.loc[
+            (clean_concat_df["Well_Id"].apply(lambda x: x[:1]) == std_row) &
+            (clean_concat_df["Well_Id"].apply(lambda x: int(x[1:]) > 6)), "Abs_id"
+        ] = "Standard"
+    else:
+        clean_concat_df.loc[
+            (clean_concat_df["Well_Id"].apply(lambda x: x[:1]) == std_row), "Abs_id"
+        ] = "Standard"
     main_df.set_index("Unique_Id", drop=False, inplace=True)
     main_concat_df = raw_od.join(main_df, how="right")
-    main_concat_df.loc[
-        (main_concat_df["Well_Id"].apply(lambda x: x[:1]) == std_row), "Abs_id"
-    ] = "Standard"
+    if std_pos == 'half':
+        main_concat_df.loc[
+            (main_concat_df["Well_Id"].apply(lambda x: x[:1]) == std_row) &
+            (main_concat_df["Well_Id"].apply(lambda x: int(x[1:]) > 6)), "Abs_id"
+        ] = "Standard"
+    else:
+        main_concat_df.loc[
+            (main_concat_df["Well_Id"].apply(lambda x: x[:1]) == std_row), "Abs_id"
+        ] = "Standard"
     # clean_concat_df = concat_data.concat_display(clean_df, raw_od)
     # main_concat_df = concat_data.concat_data(main_df, raw_od)
     # main_concat_df.to_csv("test_df_precalc.csv")

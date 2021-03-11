@@ -2,7 +2,6 @@ import pandas as pd
 import numpy as np
 
 def find_max(row, clean_df):
-    print(clean_df[clean_df["Alpha_avg_raw"] == row]["Unique_Id"])
 
     max_found = False
     max_slope = 0
@@ -34,7 +33,6 @@ def find_max(row, clean_df):
             if max_cols == []:
                 return original_max
         else:
-            print("passed")
             max_found = True
             return max_slope
 

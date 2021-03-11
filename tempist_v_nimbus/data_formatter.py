@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np
 
 
-def data_format(source, plates, volumes, std_row, std_conc):
+def data_format(source, plates, volumes, std_row, std_conc, std_pos):
 
     # Picking bloc
     # 4 pt dataframe
@@ -77,7 +77,15 @@ def data_format(source, plates, volumes, std_row, std_conc):
                 # else:
                 #     bloc_df.insert(2, "Sample", "Experimental")
                 bloc_df.insert(1, "Well_Id", well_id[well_index])
-                if std_row != "":
+                if std_row != "" and std_pos == "half":
+                    bloc_df.insert(
+                        2,
+                        "std_conc",
+                        bloc_df["Well_Id"].apply(
+                            lambda x: std_conc[int(x[1:]) - 1] if x[:1] == std_row and int(x[1:]) > 6 else ""
+                        )
+                    )
+                elif std_row != "":
                     bloc_df.insert(
                         2,
                         "std_conc",
