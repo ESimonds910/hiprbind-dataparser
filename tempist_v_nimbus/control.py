@@ -38,8 +38,7 @@ def run_main():
     source_df, rep_df = file_finder.data_finder(plates, raw_enpsire_path, std_row)
 
     clean_df, main_df = data_formatter.data_format(source_df, plates, volumes, std_row, std_conc)
-    print(clean_df)
-    print(main_df)
+
     clean_df.set_index("Unique_Id", inplace=True)
     raw_od.set_index("Harvest_id", drop=False, inplace=True)
     clean_concat_df = raw_od.join(clean_df, how="right")
@@ -53,6 +52,7 @@ def run_main():
     ] = "Standard"
     # clean_concat_df = concat_data.concat_display(clean_df, raw_od)
     # main_concat_df = concat_data.concat_data(main_df, raw_od)
+    # main_concat_df.to_csv("test_df_precalc.csv")
     complete_df = eight_pt_calculations.make_calculations(main_concat_df, volumes)
 
     with pd.ExcelWriter(f"{proj_name}.xlsx") as writer:

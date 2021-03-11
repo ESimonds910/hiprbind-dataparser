@@ -1,33 +1,47 @@
 import pandas as pd
 import numpy as np
 
+def find_max(row, clean_df):
+    print(clean_df[clean_df["Alpha_avg_raw"] == row]["Unique_Id"])
+
+    max_found = False
+    max_slope = 0
+    original_max = 0
+    max_cols = [f"alpha_slope_{n}" for n in range(1, 8)]
+    alpha_cols = [f"Alpha_{n}" for n in range(1, 9)]
+    search_cols = alpha_cols + max_cols
+    selected_row = clean_df[clean_df["Alpha_avg_raw"] == row].loc[:, search_cols]
+    # new_avg = selected_row.loc[:, ["Alpha_5", "Alpha_6", "Alpha_7", "Alpha_8"]].std(axis=1).item()
+    # row_minus_std = row - std
+    while not max_found:
+
+        # print(max_cols)
+        max_slope = float(selected_row.loc[:, max_cols].max(axis=1))
+
+        # print(f"max_slope: {max_slope}")
+        col_idx = selected_row.loc[:, max_cols].idxmax(axis=1).item()
+        # print(f"col_idx 1: {col_idx}")
+        try:
+            col_num = int(col_idx.split("_")[2])
+        except IndexError:
+            print(f"col_idx 2: {col_idx}")
+        alpha_raw_max = int(selected_row[f"Alpha_{col_num}"])
+        # print(f"alpha_raw_max: {alpha_raw_max} vs alpha_mean: {row}")
+        if alpha_raw_max < row:
+            max_cols.remove(col_idx)
+            if max_slope > original_max:
+                original_max = max_slope
+            if max_cols == []:
+                return original_max
+        else:
+            print("passed")
+            max_found = True
+            return max_slope
+
+
+
 
 def make_calculations(main_df, dilution_volumes):
-#     unique_id = df["Id"] + "_" + df["Sample"]
-#     unique_id_list = list(unique_id.unique())
-#     sample_id = [x.split("_")[0] for x in unique_id_list]
-#     sample_type = [x.split("_")[1] for x in unique_id_list]
-#     alpha_slopes = [[(df.iloc[row + x]["Alpha"] - df.iloc[row + x - 1]["Alpha"]) /
-#                (df.iloc[row + x]["Volumes"] - df.iloc[row + x - 1]["Volumes"])
-#               for row in range(7)] for x in range(1, df.shape[0], 8)]
-#
-#     dna_slopes = [[(df.iloc[row + x]["DNA"] - df.iloc[row + x - 1]["DNA"]) /
-#                (df.iloc[row + x]["Volumes"] - df.iloc[row + x - 1]["Volumes"])
-#               for row in range(7)] for x in range(1, df.shape[0], 8)]
-#
-#     slope_df = pd.DataFrame(alpha_slopes, columns=[f"Alpha_Slope_{x}" for x in range(1, 8)])
-#     slope_df = pd.concat([slope_df, pd.DataFrame(dna_slopes, columns=[f"DNA_Slope_{x}" for x in range(1, 8)])], axis=1)
-#
-#     slope_df["Alpha_Max"] = slope_df.iloc[:, 0:7].max(axis=1)
-#     slope_df["DNA_Max"] = slope_df.iloc[:, 7:14].max(axis=1)
-#     slope_df["Alpha_Max/DNA_Max"] = slope_df["Alpha_Max"] / slope_df["DNA_Max"]
-#     slope_df.insert(0, "Id", unique_id_list)
-#     slope_df.insert(1, "Sample", sample_id)
-#     slope_df.insert(2, "Sample_Type", sample_type)
-#
-#     return slope_df
-
-
     clean_df = main_df
     # dilution_volumes = [0.357, 0.056, 0.006, 0.0004]
     # dilution_volumes = [float(x) for x in dilution_volumes.split(",")]
@@ -35,18 +49,25 @@ def make_calculations(main_df, dilution_volumes):
     # main_df[["Alpha_1", "Alpha_2", "Alpha_3", "Alpha_4", "Alpha_5", "Alpha_6", "Alpha_7", "Alpha_8"]] = main_df[
     #     ["Alpha_1", "Alpha_2", "Alpha_3", "Alpha_4", "Alpha_5", "Alpha_6", "Alpha_7", "Alpha_8"]
     # ].astype(float)
+    clean_df["Alpha_avg_raw"] = clean_df.loc[
+                                :, "Alpha_1":"Alpha_8"
+    ].mean(axis=1)
     for n in range(1, 8):
+
         clean_df[f"alpha_slope_{n}"] = round((clean_df[f"Alpha_{n + 1}"] - clean_df[f"Alpha_{n}"]) /
                                                   (dilution_volumes[n] - dilution_volumes[n - 1]), 2)
-    clean_df["Alpha.Max.Slope"] = clean_df[
-        ["alpha_slope_1", "alpha_slope_2", "alpha_slope_3", "alpha_slope_4", "alpha_slope_5", "alpha_slope_6", "alpha_slope_7"]
+
+    clean_df["Value"] = clean_df["Alpha_avg_raw"].apply(find_max, args=(clean_df, ))
+    clean_df["4pt_selection"] = clean_df.loc[:, "alpha_slope_1":"alpha_slope_4"].max(axis=1)
+    clean_df["Alpha.Max.Slope"] = clean_df.loc[
+        :, "alpha_slope_1":"alpha_slope_7"
     ].max(axis=1)
 
     for n in range(1, 8):
         clean_df[f"dna_slope_{n}"] = round((clean_df[f"DNA_{n + 1}"] - clean_df[f"DNA_{n}"]) /
                                                 (dilution_volumes[n] - dilution_volumes[n - 1]), 2)
-    clean_df["DNA.Max.Slope"] = clean_df[
-        ["dna_slope_1", "dna_slope_2", "dna_slope_3", "dna_slope_4", "dna_slope_5", "dna_slope_6", "dna_slope_7"]
+    clean_df["DNA.Max.Slope"] = clean_df.loc[
+        :, "dna_slope_1":"dna_slope_7"
     ].max(axis=1)
 
     clean_df["HPB_DNA"] = round(clean_df["Alpha.Max.Slope"] /
@@ -54,5 +75,12 @@ def make_calculations(main_df, dilution_volumes):
 
     clean_df["HPB_OD"] = round(clean_df["Alpha.Max.Slope"] / clean_df["Raw_od"], 2)
 
-
     return clean_df
+
+
+if __name__ == "__main__":
+    test_df = pd.read_csv("test_df_precalc.csv")
+    volumes = [0.21428571, 0.03061224, 0.00437318, 0.00062474, 0.00008925, 0.00001275, 0.00000182, 0.00000026]
+    output_df = make_calculations(test_df, volumes)
+    print(output_df.iloc[0])
+    output_df.to_csv("Test_output.csv")
