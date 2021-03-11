@@ -2,35 +2,35 @@ import pandas as pd
 import numpy as np
 
 
-def data_format(source, plates, volumes, std_row, std_conc, std_pos):
+def data_format(source, proj_name, plates, volumes, std_row, std_conc, std_pos):
 
     # Picking bloc
     # 4 pt dataframe
-    clean_df = pd.DataFrame()
-    main_formatted_df = pd.DataFrame()
-
-    end_row = int(source.shape[0] - 1)
-    for row in range(0, end_row, 2):
-        end_col = int(source.shape[1] / 2)
-        for col in range(1, end_col, 2):
-            dna_col_id = col + 24
-            bloc_df = pd.DataFrame([list(source.iloc[row][[col, col + 1]])
-                            + list(source.iloc[row + 1][[col, col + 1]]),
-                            list(source.iloc[row][[dna_col_id, dna_col_id + 1]])
-                            + list(source.iloc[row + 1][[dna_col_id, dna_col_id + 1]])],
-                            index=["Alpha", "DNA"]).transpose()
-            bloc_df.insert(0, "Plate", source.iloc[row]["Plate"])
-            clean_df = pd.concat([clean_df, bloc_df])
-    clean_df.to_csv("Output.csv")
+    # clean_df = pd.DataFrame()
+    # main_formatted_df = pd.DataFrame()
+    #
+    # end_row = int(source.shape[0] - 1)
+    # for row in range(0, end_row, 2):
+    #     end_col = int(source.shape[1] / 2)
+    #     for col in range(1, end_col, 2):
+    #         dna_col_id = col + 24
+    #         bloc_df = pd.DataFrame([list(source.iloc[row][[col, col + 1]])
+    #                         + list(source.iloc[row + 1][[col, col + 1]]),
+    #                         list(source.iloc[row][[dna_col_id, dna_col_id + 1]])
+    #                         + list(source.iloc[row + 1][[dna_col_id, dna_col_id + 1]])],
+    #                         index=["Alpha", "DNA"]).transpose()
+    #         bloc_df.insert(0, "Plate", source.iloc[row]["Plate"])
+    #         clean_df = pd.concat([clean_df, bloc_df])
+    # clean_df.to_csv("Output.csv")
     # 8pt dataframe
-    # well_id = [f"A{str(y).zfill(2)}" for y in range(1, 13)] \
-    #           + [f"B{str(y).zfill(2)}" for y in range(1, 13)] \
-    #           + [f"C{str(y).zfill(2)}" for y in range(1, 13)] \
-    #           + [f"D{str(y).zfill(2)}" for y in range(1, 13)]
-    well_id = [f"A{y}" for y in range(1, 13)] \
-              + [f"B{y}" for y in range(1, 13)] \
-              + [f"C{y}" for y in range(1, 13)] \
-              + [f"D{y}" for y in range(1, 13)]
+    well_id = [f"A{str(y).zfill(2)}" for y in range(1, 13)] \
+              + [f"B{str(y).zfill(2)}" for y in range(1, 13)] \
+              + [f"C{str(y).zfill(2)}" for y in range(1, 13)] \
+              + [f"D{str(y).zfill(2)}" for y in range(1, 13)]
+    # well_id = [f"A{y}" for y in range(1, 13)] \
+    #           + [f"B{y}" for y in range(1, 13)] \
+    #           + [f"C{y}" for y in range(1, 13)] \
+    #           + [f"D{y}" for y in range(1, 13)]
 
     clean_df = pd.DataFrame()
     main_formatted_df = pd.DataFrame()
@@ -97,8 +97,8 @@ def data_format(source, plates, volumes, std_row, std_conc, std_pos):
                 bloc_df.insert(2, "Row", bloc_df["Well_Id"].apply(lambda x: x[:1]))
                 bloc_df.insert(3, "Col", bloc_df["Well_Id"].apply(lambda x: x[1:]))
                 bloc_df.insert(0, "Id", bloc_df["Plate"] + "-" + bloc_df["Well_Id"])
-                bloc_df.insert(0, "Unique_Id", "SOM00001-" + bloc_df["Id"])
-                main_df.insert(0, "Unique_Id", "SOM00001-" + main_df["plate"] + "-" + main_df["Well_Id"])
+                bloc_df.insert(0, "Unique_Id", proj_name + "-" + bloc_df["Id"])
+                main_df.insert(0, "Unique_Id", proj_name + "-" + main_df["plate"] + "-" + main_df["Well_Id"])
                 main_formatted_df = pd.concat([main_formatted_df, main_df])
                 clean_df = pd.concat([clean_df, bloc_df])
                 well_index += 1
