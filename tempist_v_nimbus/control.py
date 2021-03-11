@@ -16,7 +16,11 @@ def run_main():
     window.withdraw()
     # proj_name = input("Enter project name: ")
     # plate_num = int(input("Enter number of plates: "))
-    proj_name = "SOM00001"
+    proj_name = "SOM00001-CD19"
+    if "-" in proj_name:
+        ab_name = proj_name.split("-")[-1]
+    else:
+        ab_name = ""
     plate_num = 11
     plates = [f"P{x}" for x in range(1, plate_num+1)]
     # volumes = input("Enter the volumes used for experiment: ").split(",")
@@ -52,6 +56,9 @@ def run_main():
         clean_concat_df.loc[
             (clean_concat_df["Well_Id"].apply(lambda x: x[:1]) == std_row), "Abs_id"
         ] = "Standard"
+    if ab_name != "":
+        clean_concat_df.insert(loc=1, column="HPB_scheme", value=ab_name)
+
     main_df.set_index("Unique_Id", drop=False, inplace=True)
     main_concat_df = raw_od.join(main_df, how="right")
     if std_pos == 'half':
@@ -63,6 +70,8 @@ def run_main():
         main_concat_df.loc[
             (main_concat_df["Well_Id"].apply(lambda x: x[:1]) == std_row), "Abs_id"
         ] = "Standard"
+    if ab_name != "":
+        main_concat_df.insert(loc=1, column="HPB_scheme", value=ab_name)
     # clean_concat_df = concat_data.concat_display(clean_df, raw_od)
     # main_concat_df = concat_data.concat_data(main_df, raw_od)
     # main_concat_df.to_csv("test_df_precalc.csv")
