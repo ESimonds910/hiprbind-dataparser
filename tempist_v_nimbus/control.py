@@ -9,6 +9,25 @@ from eight_point_concat import DataConcat
 from modules.import_od import import_od
 
 
+def join_dfs(df_list, raw_od, std_pos, std_row, ab_name):
+    join_df_list = []
+    for df in df_list:
+        df.set_index("Unique_Id", inplace=True)
+        raw_od.set_index("Harvest_id", drop=False, inplace=True)
+        join_df = raw_od.join(df, how="right")
+        if std_pos == 'half':
+            join_df.loc[
+                (join_df["Well_Id"].apply(lambda x: x[:1]) == std_row) &
+                (join_df["Well_Id"].apply(lambda x: int(x[1:]) > 6)), "Abs_id"
+            ] = "Standard"
+        else:
+            join_df.loc[
+                (join_df["Well_Id"].apply(lambda x: x[:1]) == std_row), "Abs_id"
+            ] = "Standard"
+        if ab_name != "":
+            join_df.insert(loc=1, column="HPB_scheme", value=ab_name)
+        join_df_list.append(join_df)
+    return join_df_list
 
 
 def run_main(proj_names):
@@ -59,42 +78,52 @@ def run_main(proj_names):
             std_pos
         )
 
-        clean_df.set_index("Unique_Id", inplace=True)
-        raw_od.set_index("Harvest_id", drop=False, inplace=True)
-        clean_concat_df = raw_od.join(clean_df, how="right")
-        if std_pos == 'half':
-            clean_concat_df.loc[
-                (clean_concat_df["Well_Id"].apply(lambda x: x[:1]) == std_row) &
-                (clean_concat_df["Well_Id"].apply(lambda x: int(x[1:]) > 6)), "Abs_id"
-            ] = "Standard"
-        else:
-            clean_concat_df.loc[
-                (clean_concat_df["Well_Id"].apply(lambda x: x[:1]) == std_row), "Abs_id"
-            ] = "Standard"
-        if ab_name != "":
-            clean_concat_df.insert(loc=1, column="HPB_scheme", value=ab_name)
+        df_list = [clean_df, main_df, clean_rep_df, main_rep_df]
+        dfs_return = join_dfs(df_list, raw_od, std_pos, std_row, ab_name)
+        # clean_df.set_index("Unique_Id", inplace=True)
+        # raw_od.set_index("Harvest_id", drop=False, inplace=True)
+        # clean_join_df = raw_od.join(clean_df, how="right")
+        # if std_pos == 'half':
+        #     clean_join_df.loc[
+        #         (clean_join_df["Well_Id"].apply(lambda x: x[:1]) == std_row) &
+        #         (clean_join_df["Well_Id"].apply(lambda x: int(x[1:]) > 6)), "Abs_id"
+        #     ] = "Standard"
+        # else:
+        #     clean_join_df.loc[
+        #         (clean_join_df["Well_Id"].apply(lambda x: x[:1]) == std_row), "Abs_id"
+        #     ] = "Standard"
+        # if ab_name != "":
+        #     clean_join_df.insert(loc=1, column="HPB_scheme", value=ab_name)
+        #
+        # main_df.set_index("Unique_Id", drop=False, inplace=True)
+        # main_join_df = raw_od.join(main_df, how="right")
+        # if std_pos == 'half':
+        #     main_join_df.loc[
+        #         (main_join_df["Well_Id"].apply(lambda x: x[:1]) == std_row) &
+        #         (main_join_df["Well_Id"].apply(lambda x: int(x[1:]) > 6)), "Abs_id"
+        #     ] = "Standard"
+        # else:
+        #     main_join_df.loc[
+        #         (main_join_df["Well_Id"].apply(lambda x: x[:1]) == std_row), "Abs_id"
+        #     ] = "Standard"
+        # if ab_name != "":
+        #     main_join_df.insert(loc=1, column="HPB_scheme", value=ab_name)
+        # # clean_join_df = concat_data.concat_display(clean_df, raw_od)
+        # # main_join_df = concat_data.concat_data(main_df, raw_od)
+        # # main_join_df.to_csv("test_df_precalc.csv")
+        clean_join_df = dfs_return[0]
+        main_join_df = dfs_return[1]
+        clean_rep_join_df = dfs_return[2]
+        main_rep_join_df = dfs_return[3]
 
-        main_df.set_index("Unique_Id", drop=False, inplace=True)
-        main_concat_df = raw_od.join(main_df, how="right")
-        if std_pos == 'half':
-            main_concat_df.loc[
-                (main_concat_df["Well_Id"].apply(lambda x: x[:1]) == std_row) &
-                (main_concat_df["Well_Id"].apply(lambda x: int(x[1:]) > 6)), "Abs_id"
-            ] = "Standard"
-        else:
-            main_concat_df.loc[
-                (main_concat_df["Well_Id"].apply(lambda x: x[:1]) == std_row), "Abs_id"
-            ] = "Standard"
-        if ab_name != "":
-            main_concat_df.insert(loc=1, column="HPB_scheme", value=ab_name)
-        # clean_concat_df = concat_data.concat_display(clean_df, raw_od)
-        # main_concat_df = concat_data.concat_data(main_df, raw_od)
-        # main_concat_df.to_csv("test_df_precalc.csv")
-        complete_df = eight_pt_calculations.make_calculations(main_concat_df, volumes)
+        complete_df = eight_pt_calculations.make_calculations(main_join_df, volumes)
+        complete_rep_df = eight_pt_calculations.make_calculations(main_rep_join_df, volumes)
 
         with pd.ExcelWriter(f"{proj_name}.xlsx") as writer:
             complete_df.to_excel(writer, sheet_name="Calculations")
-            clean_concat_df.to_excel(writer, sheet_name="Display_Ready")
+            clean_join_df.to_excel(writer, sheet_name="Display_Ready")
+            complete_rep_df.to_excel(writer, sheet_name="Rep_Calculations")
+            clean_rep_join_df.to_excel(writer, sheet_name="Rep_Display_Ready")
         print(f"Project {project_title} has been output.")
 
 

@@ -117,12 +117,11 @@ def data_format(source, proj_name, plates, volumes, std_row, std_conc, std_pos):
 
     clean_rep_df = clean_df[clean_df["Replicate"] == "replicate"]
     clean_df = clean_df[clean_df["Replicate"] == ""]
-    print(clean_df)
+
     main_formatted_rep_df = main_formatted_df[main_formatted_df["Replicate"] == "replicate"]
     main_formatted_df = main_formatted_df[main_formatted_df["Replicate"] == ""]
     #     print(f"shape: {clean_df.shape}")
     #     print(clean_df.tail())
-    clean_df.to_csv("Output8pt.csv")
-
+    # clean_df.to_csv("Output8pt.csv")
 
     return clean_df, main_formatted_df, clean_rep_df, main_formatted_rep_df
