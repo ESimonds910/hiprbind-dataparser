@@ -2,7 +2,7 @@ import pandas as pd
 from time import time
 from tkinter import Tk
 from tkinter.filedialog import askopenfilename
-from modules.import_csv import FileFinder
+from import_csv_test import FileFinder
 import data_formatter
 import eight_pt_calculations
 from eight_point_concat import DataConcat
@@ -24,7 +24,8 @@ def run_main(proj_names):
             ab_name = ""
             proj_name = proj
         plate_num = 11
-        plates = [f"P{x}" for x in range(1, plate_num+1)]
+        # plates = [f"P{x}" for x in range(1, plate_num+1)]
+        plates = ["P1-1", "P1-2", "P2", "P3", "P4-1", "P4-2"]
         # volumes = input("Enter the volumes used for experiment: ").split(",")
         # volumes = [float(x) for x in volumes]
         raw_enpsire_path = askopenfilename(title="Choose raw file")
@@ -48,7 +49,7 @@ def run_main(proj_names):
             std_row
         )
 
-        clean_df, main_df = data_formatter.data_format(
+        clean_df, main_df, clean_rep_df, main_rep_df = data_formatter.data_format(
             source_df,
             proj_name,
             plates,
@@ -105,5 +106,5 @@ if __name__ == "__main__":
     run_main(proj_names)
     window.destroy()
     end_time = time()
-    split = end_time - start_time
+    split = round(end_time - start_time, 2)
     print(f"Program runtime: {split}s")
