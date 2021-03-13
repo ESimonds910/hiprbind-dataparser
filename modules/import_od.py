@@ -22,16 +22,13 @@ def import_od(input_od_path):
         pass
     except KeyError:
         try:
-            print("ran here")
             od_data = pd.read_excel(input_od_path)
         except FileNotFoundError:
             messagebox.showinfo(title="Uh oh...", message="Something's wrong. The OD file wasn't found.")
             pass
     except ValueError:
         try:
-            print("ran valueerror")
             od_data = pd.read_csv(input_od_path)
-            print(od_data)
         except FileNotFoundError:
             messagebox.showinfo(title="Uh oh...", message="Something's wrong. The OD file wasn't found.")
             pass
