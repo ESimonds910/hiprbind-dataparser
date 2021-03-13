@@ -97,9 +97,9 @@ def data_format(source, proj_name, plates, volumes, std_row, std_conc, std_pos):
                 bloc_df.insert(3, "Volumes", volumes)
                 bloc_df.insert(2, "Row", bloc_df["Well_Id"].apply(lambda x: x[:1]))
                 bloc_df.insert(3, "Col", bloc_df["Well_Id"].apply(lambda x: x[1:]))
-                bloc_df.insert(0, "Id", plate[:2] + "-" + bloc_df["Well_Id"])
+                bloc_df.insert(0, "Id", plate.split("-")[0] + "-" + bloc_df["Well_Id"])
                 bloc_df.insert(0, "Unique_Id", proj_name + "-" + bloc_df["Id"])
-                main_df.insert(0, "Unique_Id", proj_name + "-" + plate[:2] + "-" + main_df["Well_Id"])
+                main_df.insert(0, "Unique_Id", proj_name + "-" + plate.split("-")[0] + "-" + main_df["Well_Id"])
                 main_formatted_df = pd.concat([main_formatted_df, main_df])
                 clean_df = pd.concat([clean_df, bloc_df])
                 well_index += 1
@@ -107,11 +107,11 @@ def data_format(source, proj_name, plates, volumes, std_row, std_conc, std_pos):
         end_row += 16
 
     clean_df["Replicate"] = np.where(
-        clean_df["Plate"].apply(lambda x: x[2:]) == "-2",
+        clean_df["Plate"].apply(lambda x: x[-2:]) == "-2",
         "replicate", ""
     )
     main_formatted_df["Replicate"] = np.where(
-        main_formatted_df["Plate"].apply(lambda x: x[2:]) == "-2",
+        main_formatted_df["Plate"].apply(lambda x: x[-2:]) == "-2",
         "replicate", ""
     )
 

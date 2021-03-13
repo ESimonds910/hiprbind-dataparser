@@ -44,7 +44,7 @@ def run_main(proj_names):
             proj_name = proj
         plate_num = 11
         # plates = [f"P{x}" for x in range(1, plate_num+1)]
-        plates = ["P1-1", "P1-2", "P2", "P3", "P4-1", "P4-2"]
+        plates = ["P1-1", "P1-2", "P2", "P3", "P4", "P5", "P6", "P7", "P8", "P9", "P10", "P11-1", "P11-2"]
         # volumes = input("Enter the volumes used for experiment: ").split(",")
         # volumes = [float(x) for x in volumes]
         raw_enpsire_path = askopenfilename(title="Choose raw file")
@@ -119,7 +119,7 @@ def run_main(proj_names):
         complete_df = eight_pt_calculations.make_calculations(main_join_df, volumes)
         complete_rep_df = eight_pt_calculations.make_calculations(main_rep_join_df, volumes)
 
-        with pd.ExcelWriter(f"{proj_name}.xlsx") as writer:
+        with pd.ExcelWriter(f"{project_title}_w_replicates.xlsx") as writer:
             complete_df.to_excel(writer, sheet_name="Calculations")
             clean_join_df.to_excel(writer, sheet_name="Display_Ready")
             complete_rep_df.to_excel(writer, sheet_name="Rep_Calculations")
@@ -131,7 +131,7 @@ if __name__ == "__main__":
     start_time = time()
     window = Tk()
     window.withdraw()
-    proj_names = ["SOM00001-CD19", "SOM00001-ULBP2"]
+    proj_names = ["SOM00001"]
     run_main(proj_names)
     window.destroy()
     end_time = time()
