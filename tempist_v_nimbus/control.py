@@ -13,16 +13,16 @@ def join_dfs(df_list, raw_od, std_pos, std_row, ab_name):
     join_df_list = []
     for df in df_list:
         df.set_index("Unique_Id", inplace=True)
-        raw_od.set_index("Harvest_id", drop=False, inplace=True)
+        raw_od.set_index("Harvest_sample_id", drop=False, inplace=True)
         join_df = raw_od.join(df, how="right")
         if std_pos == 'half':
             join_df.loc[
                 (join_df["Well_Id"].apply(lambda x: x[:1]) == std_row) &
-                (join_df["Well_Id"].apply(lambda x: int(x[1:]) > 6)), "Abs_id"
+                (join_df["Well_Id"].apply(lambda x: int(x[1:]) > 6)), "Sample_type"
             ] = "Standard"
         else:
             join_df.loc[
-                (join_df["Well_Id"].apply(lambda x: x[:1]) == std_row), "Abs_id"
+                (join_df["Well_Id"].apply(lambda x: x[:1]) == std_row), "Sample_type"
             ] = "Standard"
         if ab_name != "":
             join_df.insert(loc=1, column="HPB_scheme", value=ab_name)
@@ -42,20 +42,20 @@ def run_main(proj_names):
         else:
             ab_name = ""
             proj_name = proj
-        plate_num = 11
+        # plate_num = 11
         # plates = [f"P{x}" for x in range(1, plate_num+1)]
-        plates = ["P1-1", "P1-2", "P2", "P3", "P4", "P5", "P6", "P7", "P8", "P9", "P10", "P11-1", "P11-2"]
+        plates = ["P2-1", "P2-2"]
         # volumes = input("Enter the volumes used for experiment: ").split(",")
         # volumes = [float(x) for x in volumes]
         raw_enpsire_path = askopenfilename(title="Choose raw file")
-        od_file_path = askopenfilename(title="Choose ELN file")
-
+        # od_file_path = askopenfilename(title="Choose ELN file")
+        od_file_path = r"L:\Molecular Sciences\Small Scale Runs\SSF00613 DSS (96DW) Xolo 40 variant screening\SSF00613 Discrete Strain Screening (DSS) 96DW ELN v1.5.xlsm".replace("\\", "/")
         # This data will be used for testing
         std_row = "D"
         std_pos = "half"
-        std_conc = [100, 50, 16.7, 5.6, 1.9, 0.6] * 2
+        std_conc = [24, 8, 2.7, 0.9, 0.3, 0.1] * 2
         # plates = "P1 P2 P3 P4 P5 P6".split()
-        volumes = [0.21428571, 0.03061224, 0.00437318, 0.00062474, 0.00008925, 0.00001275, 0.00000182, 0.00000026]
+        volumes = [2.000, 0.667, 0.222, 0.074, 0.025, 0.008, 0.003, 0.001]
         # raw_enpsire_path = r"L:/High Throughput Screening/HiPrBind/Data_Parser_Helper_Tool/Training Helper tool/TestEnpireFile.csv"
 
         # window.destroy()
@@ -119,7 +119,7 @@ def run_main(proj_names):
         complete_df = eight_pt_calculations.make_calculations(main_join_df, volumes)
         complete_rep_df = eight_pt_calculations.make_calculations(main_rep_join_df, volumes)
 
-        with pd.ExcelWriter(f"{project_title}_w_replicates.xlsx") as writer:
+        with pd.ExcelWriter(f"{project_title}_output.xlsx") as writer:
             complete_df.to_excel(writer, sheet_name="Calculations")
             clean_join_df.to_excel(writer, sheet_name="Display_Ready")
             complete_rep_df.to_excel(writer, sheet_name="Rep_Calculations")
@@ -131,7 +131,14 @@ if __name__ == "__main__":
     start_time = time()
     window = Tk()
     window.withdraw()
-    proj_names = ["SOM00001"]
+    proj_names = [
+        "SSF00613-p1-CD19",
+        "SSF00613-p1-ULBP2",
+        "SSF00613-p2-CD19",
+        "SSF00613-p2-ULBP2",
+        "SSF00613-p3-CD19",
+        "SSF00613-p3-ULBP2"
+    ]
     run_main(proj_names)
     window.destroy()
     end_time = time()

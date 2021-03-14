@@ -120,6 +120,7 @@ def data_format(source, proj_name, plates, volumes, std_row, std_conc, std_pos):
 
     main_formatted_rep_df = main_formatted_df[main_formatted_df["Replicate"] == "replicate"]
     main_formatted_df = main_formatted_df[main_formatted_df["Replicate"] == ""]
+    main_formatted_df.drop("Replicate", inplace=True, axis=1)
     #     print(f"shape: {clean_df.shape}")
     #     print(clean_df.tail())
     # clean_df.to_csv("Output8pt.csv")

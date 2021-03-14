@@ -34,7 +34,7 @@ def import_od(input_od_path):
             pass
     finally:
         try:
-            for column in od_data.columns:
+            for column in od_data.columns[1:]:
                 if " " in column:
                     new_column = column.strip().replace(" ", "_").lower().capitalize()
                 else:

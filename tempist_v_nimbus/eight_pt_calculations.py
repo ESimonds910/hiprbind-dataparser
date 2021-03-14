@@ -41,7 +41,7 @@ def find_max(row, clean_df):
 
 def make_calculations(main_df, dilution_volumes):
     clean_df = main_df
-    main_df["Raw_od"] = main_df["Raw_od"].apply(lambda x: round(float(x), 2) if x != "" else "0.0")
+    main_df["Od600"] = main_df["Od600"].apply(lambda x: round(float(x), 2) if x != "" else "0.0")
     # main_df[["Alpha_1", "Alpha_2", "Alpha_3", "Alpha_4", "Alpha_5", "Alpha_6", "Alpha_7", "Alpha_8"]] = main_df[
     #     ["Alpha_1", "Alpha_2", "Alpha_3", "Alpha_4", "Alpha_5", "Alpha_6", "Alpha_7", "Alpha_8"]
     # ].astype(float)
@@ -64,7 +64,7 @@ def make_calculations(main_df, dilution_volumes):
 
     clean_df["HPB_DNA"] = round(clean_df["Alpha.Max.Slope"] / clean_df["DNA.Max.Slope"], 2)
 
-    clean_df["HPB_OD"] = round(clean_df["Alpha.Max.Slope"] / clean_df["Raw_od"], 2)
+    clean_df["HPB_OD"] = round(clean_df["Alpha.Max.Slope"] / clean_df["Od600"], 2)
 
     return clean_df
 
