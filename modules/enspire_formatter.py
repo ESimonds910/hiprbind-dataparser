@@ -17,7 +17,7 @@ class DataFormatter:
                          ]
 
     # TODO edit replicate data to same table
-    def formatter(self, all_enspire_data, all_rep_data, plate_ids, dilutions, proj_name, std_row, std_conc):
+    def formatter(self, all_enspire_data, all_rep_data, plate_ids, dilutions, proj_name, std_row, std_conc, std_pos):
         for plate in plate_ids:
             if len(plate) == 2 or plate.split("-")[1] == "1":
                 wl = 0
@@ -36,7 +36,7 @@ class DataFormatter:
 
                         # For display ready tab
                         display_bloc = pd.DataFrame([[self.well_ids[wl] for n in range(4)],
-                                                     dilutions.split(","),
+                                                     dilutions.split(" "),
                                                      list(bloc_df.iloc[0, 2:6]),
                                                      list(bloc_df.iloc[0, 6:])],
                                                     index="Well_Id Volumes Alpha DNA".split()).transpose()
@@ -46,9 +46,34 @@ class DataFormatter:
                         display_bloc.insert(3, "row", display_bloc["Well_Id"].apply(lambda x: x[:1]))
                         display_bloc.insert(4, "col", display_bloc["Well_Id"].apply(lambda x: x[1:]))
 
-                        if std_row != "":
+                        if std_row != "" and std_pos == "half":
+                            bloc_df.insert(
+                                2,
+                                "std_conc",
+                                bloc_df["Well_Id"].apply(
+                                    lambda x: std_conc[int(x[1:]) - 1] if x[:1] in std_row and int(x[1:]) > 6 else ""
+                                )
+                            )
+                        elif std_row != "":
+                            bloc_df.insert(
+                                2,
+                                "std_conc",
+                                bloc_df["Well_Id"].apply(
+                                    lambda x: std_conc[int(x[1:]) - 1] if x[:1] == std_row else ""
+                                )
+                            )
+                        if std_row != "" and std_pos == "half":
                             display_bloc.insert(
-                                5,
+                                2,
+                                "std_conc",
+                                display_bloc["Well_Id"].apply(
+                                    lambda x: std_conc[int(x[1:]) - 1] if x[:1] in std_row and int(
+                                        x[1:]) > 6 else ""
+                                )
+                            )
+                        elif std_row != "":
+                            display_bloc.insert(
+                                2,
                                 "std_conc",
                                 display_bloc["Well_Id"].apply(
                                     lambda x: std_conc[int(x[1:]) - 1] if x[:1] == std_row else ""

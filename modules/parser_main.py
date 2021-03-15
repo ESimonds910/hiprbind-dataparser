@@ -24,6 +24,7 @@ class DataParser:
                     self.proj_name = proj_name_split[0]
                     self.ab_name = proj_name_split[-1]
                 else:
+                    self.ab_name = ""
                     self.proj_name = proj_name
                 self.test_output_name = proj_name
                 self.plate_ids = self.contents[proj_name]["Plate IDs"]
@@ -34,8 +35,9 @@ class DataParser:
                 # self.od_file_path = self.od_file_path.replace("/mnt/lab", "L:")
                 self.out_file_path = self.contents[proj_name]["Output path"]
                 # self.out_file_path = self.out_file_path.replace("/mnt/lab", "L:")
-                self.standard_row = "H"
-                self.standard_conc = [24, 8.0, 2.7, 0.9, 0.3, 0.1] * 2
+                self.standard_row = "G H"
+                self.std_pos = "half"
+                self.standard_conc = [100, 50, 16.7, 5.6, 1.9, 0.6] * 2
                 self.parse_data()
 
     def parse_data(self):
@@ -55,17 +57,16 @@ class DataParser:
             self.proj_name,
             self.standard_row,
             self.standard_conc,
+            self.std_pos,
         )
         all_concat_df = DataConcat().data_concat(
             formatted_enspire_df,
             raw_od_df,
-            self.standard_row,
             self.ab_name
         )
         display_concat_df = DataConcat().display_data_concat(
             display_ready_df,
             raw_od_df,
-            self.standard_row,
             self.ab_name
         )
         clean_df = Calculator().make_calculations(
@@ -73,7 +74,7 @@ class DataParser:
             self.dilutions
         )
 
-        with pd.ExcelWriter(f"test_files/{self.test_output_name}_abtest.xlsx") as writer:
+        with pd.ExcelWriter(self.out_file_path) as writer:
             clean_df.to_excel(writer, sheet_name="Main_Data")
             display_concat_df.to_excel(writer, sheet_name="Display_Ready")
 

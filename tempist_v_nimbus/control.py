@@ -52,7 +52,7 @@ def run_main(proj_names):
         od_file_path = r"L:\Molecular Sciences\Small Scale Runs\SSF00613 DSS (96DW) Xolo 40 variant screening\SSF00613 Discrete Strain Screening (DSS) 96DW ELN v1.5.xlsm".replace("\\", "/")
         # This data will be used for testing
         std_row = "D"
-        std_pos = "half"
+        std_pos = ""
         std_conc = [24, 8, 2.7, 0.9, 0.3, 0.1] * 2
         # plates = "P1 P2 P3 P4 P5 P6".split()
         volumes = [2.000, 0.667, 0.222, 0.074, 0.025, 0.008, 0.003, 0.001]

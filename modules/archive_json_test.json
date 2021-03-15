@@ -150,5 +150,31 @@
         "OD path": "/mnt/lab/High Throughput Screening/HiPrBind/Data_Parser_Helper_Tool/Training Helper tool/Test_SSF09999/TEST_OD/TEST_Processed/TEST_SSF09999_OD600.xlsx",
         "Output path": "/mnt/lab/High Throughput Screening/HiPrBind/Data_Parser_Helper_Tool/Training Helper tool/Test_SSF09999/TEST_HiPr_Bind/TEST_Processed/SSFNewTest_output.xlsx",
         "Dilution volumes": "0.35714285714285715, 0.05639097744360902, 0.006265664160401002, 0.00036856848002358837"
+    },
+    "SSF614": {
+        "plate num": 1,
+        "first rep": 0,
+        "last rep": 0,
+        "all rep": 0,
+        "raw_file_path": "L:/Molecular Sciences/Small Scale Runs/SSF00617 AKITA DSS  KOs based on Tn5 KO Hits and raiA, rmf KOs v1.5/Assays/HiPrBind/Raw/617 P1-1.csv",
+        "Plate IDs": [
+            "P1"
+        ],
+        "OD path": "L:/Molecular Sciences/Small Scale Runs/SSF00614 DSS AKITA (96DW) genome regulators in EB001 & promoter hits from ACE-enriched samples/SSF00614 Library Retests (LR) 96DW ELN v1.5.xlsm",
+        "Output path": "L:/Molecular Sciences/Small Scale Runs/SSF00614 DSS AKITA (96DW) genome regulators in EB001 & promoter hits from ACE-enriched samples/Assays/HiPrBind/Processed/SSF00614.xlsx",
+        "Dilution volumes":  "0.357142857 0.056390977 0.006265664 0.000368568"
+    },
+    "SSF00617": {
+        "plate num": 1,
+        "first rep": 0,
+        "last rep": 0,
+        "all rep": 0,
+        "raw_file_path": "L:/Molecular Sciences/Small Scale Runs/SSF00617 AKITA DSS  KOs based on Tn5 KO Hits and raiA, rmf KOs v1.5/Assays/HiPrBind/Raw/617 P1-1.csv",
+        "Plate IDs": [
+            "P1"
+        ],
+        "OD path": "L:/Molecular Sciences/Small Scale Runs/SSF00617 AKITA DSS  KOs based on Tn5 KO Hits and raiA, rmf KOs v1.5/SSF00617 Akita DSS KOs based on Tn5 KO Hits and raiA, rmf KOs ELN v1.5.xlsm",
+        "Output path": "L:/Molecular Sciences/Small Scale Runs/SSF00617 AKITA DSS  KOs based on Tn5 KO Hits and raiA, rmf KOs v1.5/Assays/HiPrBind/Processed/SSF00617.xlsx",
+        "Dilution volumes":  "0.357142857 0.056390977 0.006265664 0.000368568"
     }
 }

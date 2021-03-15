@@ -9,7 +9,7 @@ class Calculator:
     def make_calculations(self, main_df, dilution_volumes):
         self.clean_df = main_df
         # dilution_volumes = [0.357, 0.056, 0.006, 0.0004]
-        dilution_volumes = [float(x) for x in dilution_volumes.split(",")]
+        dilution_volumes = [float(x) for x in dilution_volumes.split(" ")]
         main_df["Od600"] = main_df["Od600"].apply(lambda x: round(float(x), 2) if x != "" else "0.0")
         main_df[["Alpha_1", "Alpha_2", "Alpha_3", "Alpha_4"]] = main_df[
             ["Alpha_1", "Alpha_2", "Alpha_3", "Alpha_4"]
