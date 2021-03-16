@@ -35,8 +35,8 @@ class DataParser:
                 # self.od_file_path = self.od_file_path.replace("/mnt/lab", "L:")
                 self.out_file_path = self.contents[proj_name]["Output path"]
                 # self.out_file_path = self.out_file_path.replace("/mnt/lab", "L:")
-                self.standard_row = "G H"
-                self.std_pos = "half"
+                self.standard_row = ""
+                self.std_pos = ""
                 self.standard_conc = [100, 50, 16.7, 5.6, 1.9, 0.6] * 2
                 self.parse_data()
 

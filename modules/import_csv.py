@@ -68,7 +68,6 @@ class FileFinder:
         else:
             self.all_data = pd.concat([all_alpha_data, all_dna_data], axis=1)
             self.all_rep_data = pd.concat([replicate_alpha_data, replicate_dna_data], axis=1)
-
             return self.all_data, self.all_rep_data
 
 
