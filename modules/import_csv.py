@@ -19,7 +19,7 @@ class FileFinder:
         self.all_data = pd.DataFrame()
         self.all_rep_data = pd.DataFrame()
 
-    def data_finder(self, plates, input_raw_path, standard_row):
+    def data_finder(self, plates, input_raw_path):
 
         all_alpha_data = pd.DataFrame()
         all_dna_data = pd.DataFrame()
@@ -68,6 +68,7 @@ class FileFinder:
         else:
             self.all_data = pd.concat([all_alpha_data, all_dna_data], axis=1)
             self.all_rep_data = pd.concat([replicate_alpha_data, replicate_dna_data], axis=1)
+            print(self.all_data)
             return self.all_data, self.all_rep_data
 
 

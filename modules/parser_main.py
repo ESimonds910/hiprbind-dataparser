@@ -4,7 +4,8 @@ from tkinter import Tk
 import import_od as od
 from tkinter.messagebox import showinfo
 from modules.enspire_formatter import DataFormatter
-from modules.import_csv import FileFinder
+# from modules.import_csv import FileFinder
+from tempist_v_nimbus.import_csv_test import FileFinder
 from modules.enspire_od_concat import DataConcat
 from modules.calculations import Calculator
 
@@ -44,14 +45,12 @@ class DataParser:
 
         raw_od_df = od.import_od(self.od_file_path)
 
-        raw_enspire_df, all_rep_enspire_df = FileFinder().data_finder(
+        raw_enspire_df = FileFinder().data_finder(
             self.plate_ids,
             self.raw_file_path,
-            self.standard_row
         )
         formatted_enspire_df, display_ready_df = DataFormatter().formatter(
             raw_enspire_df,
-            all_rep_enspire_df,
             self.plate_ids,
             self.dilutions,
             self.proj_name,

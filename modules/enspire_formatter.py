@@ -17,7 +17,7 @@ class DataFormatter:
                          ]
 
     # TODO edit replicate data to same table
-    def formatter(self, all_enspire_data, all_rep_data, plate_ids, dilutions, proj_name, std_row, std_conc, std_pos):
+    def formatter(self, all_enspire_data, plate_ids, dilutions, proj_name, std_row, std_conc, std_pos):
         start_row = 0
         end_row = 16
         for plate in plate_ids:
