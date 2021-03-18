@@ -44,7 +44,7 @@ def run_main(proj_names):
             proj_name = proj
         # plate_num = 11
         # plates = [f"P{x}" for x in range(1, plate_num+1)]
-        plates = ["P2-1", "P2-2"]
+        plates = input("Plate ids: ").split(" ")
         # volumes = input("Enter the volumes used for experiment: ").split(",")
         # volumes = [float(x) for x in volumes]
         raw_enpsire_path = askopenfilename(title="Choose raw file")
@@ -52,7 +52,7 @@ def run_main(proj_names):
         od_file_path = r"L:\Molecular Sciences\Small Scale Runs\SSF00613 DSS (96DW) Xolo 40 variant screening\SSF00613 Discrete Strain Screening (DSS) 96DW ELN v1.5.xlsm".replace("\\", "/")
         # This data will be used for testing
         std_row = "D"
-        std_pos = ""
+        std_pos = "half"
         std_conc = [24, 8, 2.7, 0.9, 0.3, 0.1] * 2
         # plates = "P1 P2 P3 P4 P5 P6".split()
         volumes = [2.000, 0.667, 0.222, 0.074, 0.025, 0.008, 0.003, 0.001]
@@ -62,12 +62,11 @@ def run_main(proj_names):
 
         raw_od = import_od(od_file_path)
 
-        source_df, rep_df = file_finder.data_finder(
+        source_df = file_finder.data_finder(
             plates,
             raw_enpsire_path,
-            std_row
         )
-
+        print(f"control\n {source_df}")
         clean_df, main_df, clean_rep_df, main_rep_df = data_formatter.data_format(
             source_df,
             proj_name,
@@ -133,10 +132,10 @@ if __name__ == "__main__":
     window.withdraw()
     proj_names = [
         "SSF00613-p1-CD19",
-        "SSF00613-p1-ULBP2",
         "SSF00613-p2-CD19",
-        "SSF00613-p2-ULBP2",
         "SSF00613-p3-CD19",
+        "SSF00613-p1-ULBP2",
+        "SSF00613-p2-ULBP2",
         "SSF00613-p3-ULBP2"
     ]
     run_main(proj_names)

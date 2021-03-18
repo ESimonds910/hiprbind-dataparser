@@ -46,11 +46,10 @@ class FileFinder:
         all_alpha_data = pd.DataFrame()
         all_dna_data = pd.DataFrame()
 
-        count = 0
         for plate in plates:
-            new_alpha_data = file_import(input_raw_path, "alpha", count)
-            new_dna_data = file_import(input_raw_path, "dna", count)
-            print("Passed")
+            plate_idx = plates.index(plate)
+            new_alpha_data = file_import(input_raw_path, "alpha", plate_idx)
+            new_dna_data = file_import(input_raw_path, "dna", plate_idx)
             if new_alpha_data.empty or new_dna_data.empty:
                 messagebox.showinfo(
                     title="Hang on...",
@@ -62,12 +61,11 @@ class FileFinder:
                 new_alpha_data.insert(1, "Source", plate[:2])
                 all_alpha_data = pd.concat([all_alpha_data, new_alpha_data])
                 all_dna_data = pd.concat([all_dna_data, new_dna_data])
-                count += 1
-                self.concat_alpha_dna(all_alpha_data, all_dna_data)
+
+        return self.concat_alpha_dna(all_alpha_data, all_dna_data)
 
     def concat_alpha_dna(self, all_alpha_data, all_dna_data):
         self.all_data = pd.concat([all_alpha_data, all_dna_data], axis=1)
-        print(self.all_data)
         return self.all_data
 
 
