@@ -1,7 +1,7 @@
 import pandas as pd
 import numpy as np
 
-def find_max(row, clean_df):
+def find_max(main_dfs, proj_data):
 
     max_found = False
     max_slope = 0
@@ -37,36 +37,38 @@ def find_max(row, clean_df):
             return max_slope
 
 
+def make_calculations(dfs, proj_data):
+    dv = proj_data["volumes"]
+    points = proj_data["points"]
+    signals = ["Alpha", "DNA"]
+    final_dfs = []
 
+    for df in dfs:
+        df["Od600"] = df["Od600"].apply(lambda x: round(float(x), 2) if x != "" else "0.0")
 
-def make_calculations(main_df, dilution_volumes):
-    clean_df = main_df
-    main_df["Od600"] = main_df["Od600"].apply(lambda x: round(float(x), 2) if x != "" else "0.0")
-    # main_df[["Alpha_1", "Alpha_2", "Alpha_3", "Alpha_4", "Alpha_5", "Alpha_6", "Alpha_7", "Alpha_8"]] = main_df[
-    #     ["Alpha_1", "Alpha_2", "Alpha_3", "Alpha_4", "Alpha_5", "Alpha_6", "Alpha_7", "Alpha_8"]
-    # ].astype(float)
+        df["Alpha_avg_raw"] = df.loc[:, "Alpha_1":"Alpha_8"].mean(axis=1)
 
-    clean_df["Alpha_avg_raw"] = clean_df.loc[:, "Alpha_1":"Alpha_8"].mean(axis=1)
+        for signal in signals:
+            for n in range(1, 8):
+                df[f"{signal}_slope_{n}"] = round(
+                    (df[f"{signal}_{n + 1}"] - df[f"{signal}_{n}"]) / (dv[n] - dv[n - 1]), 2
+                )
 
-    for n in range(1, 8):
-        clean_df[f"alpha_slope_{n}"] = round((clean_df[f"Alpha_{n + 1}"] - clean_df[f"Alpha_{n}"]) /
-                                                  (dilution_volumes[n] - dilution_volumes[n - 1]), 2)
+            # df["Value"] = df["Alpha_avg_raw"].apply(find_max, args=(df, ))
+            # df["4pt_selection"] = df.loc[:, "alpha_slope_1":"alpha_slope_4"].max(axis=1)
+            df[f"{signal}.Max.Slope"] = df.loc[:, f"{signal}_slope_1": f"{signal}_slope_4"].max(axis=1)
 
-    # clean_df["Value"] = clean_df["Alpha_avg_raw"].apply(find_max, args=(clean_df, ))
-    # clean_df["4pt_selection"] = clean_df.loc[:, "alpha_slope_1":"alpha_slope_4"].max(axis=1)
-    clean_df["Alpha.Max.Slope"] = clean_df.loc[:, "alpha_slope_1":"alpha_slope_4"].max(axis=1)
+        # for n in range(1, 8):
+        #     df[f"DNA_slope_{n}"] = round((df[f"DNA_{n + 1}"] - df[f"DNA_{n}"]) / (dv[n] - dv[n - 1]), 2)
+        #
+        # df["DNA.Max.Slope"] = df.loc[:, "dna_slope_1":"dna_slope_4"].max(axis=1)
 
-    for n in range(1, 8):
-        clean_df[f"dna_slope_{n}"] = round((clean_df[f"DNA_{n + 1}"] - clean_df[f"DNA_{n}"]) /
-                                                (dilution_volumes[n] - dilution_volumes[n - 1]), 2)
+        df["HPB_DNA"] = round(df["Alpha.Max.Slope"] / df["DNA.Max.Slope"], 2)
 
-    clean_df["DNA.Max.Slope"] = clean_df.loc[:, "dna_slope_1":"dna_slope_4"].max(axis=1)
+        df["HPB_OD"] = round(df["Alpha.Max.Slope"] / df["Od600"], 2)
 
-    clean_df["HPB_DNA"] = round(clean_df["Alpha.Max.Slope"] / clean_df["DNA.Max.Slope"], 2)
-
-    clean_df["HPB_OD"] = round(clean_df["Alpha.Max.Slope"] / clean_df["Od600"], 2)
-
-    return clean_df
+        final_dfs.append(df)
+    return final_dfs
 
 
 if __name__ == "__main__":

@@ -23,7 +23,7 @@ def add_standard(df, proj_data):
 
     if std_row != "" and std_pos == "half":
         df.insert(
-            2,
+            6,
             "std_conc",
             df["Well_Id"].apply(
                 lambda x: std_conc[int(x[1:]) - 1] if x[:1] in std_row and int(x[1:]) > 6 else ""
@@ -31,7 +31,7 @@ def add_standard(df, proj_data):
         )
     elif std_row != "":
         df.insert(
-            2,
+            6,
             "std_conc",
             df["Well_Id"].apply(
                 lambda x: std_conc[int(x[1:]) - 1] if x[:1] in std_row else ""
@@ -53,9 +53,9 @@ def build_columns(df, plate, proj_data, w_idx, df_id="main"):
     if df_id == "display":
         df.insert(0, "Plate", plate)
         df.insert(1, "Well_Id", well_ids[w_idx])
-        df.insert(3, "Volumes", volumes)
         df.insert(2, "Row", df["Well_Id"].apply(lambda x: x[:1]))
         df.insert(3, "Col", df["Well_Id"].apply(lambda x: x[1:]))
+        df.insert(4, "Volumes", volumes)
         df.insert(0, "Id", plate.split("-")[0] + "-" + df["Well_Id"])
         df.insert(0, "Unique_Id", proj_name + "-" + df["Id"])
         return df
@@ -104,7 +104,10 @@ def data_format(source, proj_data):
                 display_df = pd.DataFrame([alpha_quad, dna_quad], index=["Alpha", "DNA"]).transpose()
 
                 main_df = build_columns(main_df, plate, proj_data, well_index)
-                display_df = build_columns(display_df, plate, proj_data, well_index)
+                display_df = build_columns(display_df, plate, proj_data, well_index, df_id="display")
+
+                main_df = add_standard(main_df, proj_data)
+                display_df = add_standard(display_df, proj_data)
 
                 main_formatted_df = pd.concat([main_formatted_df, main_df])
                 display_formatted_df = pd.concat([display_formatted_df, display_df])

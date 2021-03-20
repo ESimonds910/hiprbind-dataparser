@@ -5,7 +5,7 @@ from tkinter.filedialog import askopenfilename
 from modules.test_files.Test_parser.import_csv_test import FileFinder
 import modules.test_files.Test_parser.test_formatter as test_formatter
 import modules.test_files.Test_parser.enspire_od_join_test as enspire_od_join
-# import eight_pt_calculations
+import modules.test_files.Test_parser.pt_calculations_test as pt_calculations
 # from eight_point_concat import DataConcat
 from modules.test_files.Test_parser.import_od_test import import_od
 
@@ -29,8 +29,21 @@ def run_main(proj_dict):
 
         joined_df_list = enspire_od_join.join_dfs(df_list, raw_od, proj_data)
 
-        for df in joined_df_list:
-            print(df.head())
+        main_join_dfs = joined_df_list[:2]
+
+        final_display_df = joined_df_list[2]
+        final_display_rep_df = joined_df_list[3]
+
+        completed_main_dfs = pt_calculations.make_calculations(main_join_dfs, proj_data)
+        final_main_df = completed_main_dfs[0]
+        final_main_rep_df = completed_main_dfs[1]
+
+        with pd.ExcelWriter(f"../test_outputs/{project_title}_output_test.xlsx") as writer:
+            final_main_df.to_excel(writer, sheet_name="Calculations")
+            final_display_df.to_excel(writer, sheet_name="Display_Ready")
+            final_main_rep_df.to_excel(writer, sheet_name="Rep_Calculations")
+            final_display_rep_df.to_excel(writer, sheet_name="Rep_Display_Ready")
+        print(f"Project {project_title} has been output.")
 
         # Also return these four dataframes into list?
         # clean_df, main_df, clean_rep_df, main_rep_df = test_formatter.data_format(source_df, proj_data)
@@ -45,12 +58,7 @@ def run_main(proj_dict):
         # complete_df = eight_pt_calculations.make_calculations(main_join_df, proj_data)
         # complete_rep_df = eight_pt_calculations.make_calculations(main_rep_join_df, proj_data)
         #
-        # with pd.ExcelWriter(f"{project_title}_output.xlsx") as writer:
-        #     complete_df.to_excel(writer, sheet_name="Calculations")
-        #     clean_join_df.to_excel(writer, sheet_name="Display_Ready")
-        #     complete_rep_df.to_excel(writer, sheet_name="Rep_Calculations")
-        #     clean_rep_join_df.to_excel(writer, sheet_name="Rep_Display_Ready")
-        # print(f"Project {project_title} has been output.")
+
 
 
 if __name__ == "__main__":
