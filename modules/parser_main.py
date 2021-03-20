@@ -5,7 +5,7 @@ import import_od as od
 from tkinter.messagebox import showinfo
 from modules.enspire_formatter import DataFormatter
 # from modules.import_csv import FileFinder
-from tempist_v_nimbus.import_csv_test import FileFinder
+from eight_point_parser.import_csv_test import FileFinder
 from modules.enspire_od_concat import DataConcat
 from modules.calculations import Calculator
 
