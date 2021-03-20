@@ -12,6 +12,7 @@ from modules.test_files.Test_parser.import_od_test import import_od
 
 def run_main(proj_dict):
     file_finder = FileFinder()
+
     for proj, inner_dict in proj_dict.items():
         project_title = proj
         if "-" in proj:
@@ -22,19 +23,28 @@ def run_main(proj_dict):
             inner_dict["proj_name"] = proj
 
         proj_data = proj_dict[proj]
-        raw_od = import_od(proj_data)
+
+        if proj_data["od_file"] != "":
+            raw_od = import_od(proj_data)
+        else:
+            raw_od = ""
+
         source_df = file_finder.data_finder(proj_data)
 
         df_list = test_formatter.data_format(source_df, proj_data)
 
-        joined_df_list = enspire_od_join.join_dfs(df_list, raw_od, proj_data)
+        if raw_od != "":
+            joined_df_list = enspire_od_join.join_dfs(df_list, raw_od, proj_data)
+            main_join_dfs = joined_df_list[:2]
+            final_display_df = joined_df_list[2]
+            final_display_rep_df = joined_df_list[3]
+            completed_main_dfs = pt_calculations.make_calculations(main_join_dfs, proj_data)
+        else:
+            main_dfs = df_list[:2]
+            final_display_df = df_list[2]
+            final_display_rep_df = df_list[3]
+            completed_main_dfs = pt_calculations.make_calculations(main_dfs, proj_data)
 
-        main_join_dfs = joined_df_list[:2]
-
-        final_display_df = joined_df_list[2]
-        final_display_rep_df = joined_df_list[3]
-
-        completed_main_dfs = pt_calculations.make_calculations(main_join_dfs, proj_data)
         final_main_df = completed_main_dfs[0]
         final_main_rep_df = completed_main_dfs[1]
 
@@ -66,8 +76,7 @@ if __name__ == "__main__":
     window = Tk()
     window.withdraw()
     proj_names = [
-        "SSF00613-p1-CD19",
-        "SSF00613-p2-CD19",
+        "Standard_Test",
     ]
     # plates = input("Plate ids: ").split(" ")
     # raw_enpsire_path = askopenfilename(title="Choose raw file")
@@ -83,12 +92,11 @@ if __name__ == "__main__":
     proj_data_dict = {
         proj: {"plates": input("Plate ids: ").split(" "),
                "raw_file": askopenfilename(title="Choose raw file"),
-               "od_file": r"L:\Molecular Sciences\Small Scale Runs\SSF00613 DSS (96DW) Xolo 40 variant "
-                          r"screening\SSF00613 Discrete Strain Screening (DSS) 96DW ELN v1.5.xlsm".replace("\\", "/"),
-               "std_row": "D",
-               "std_pos": "half",
-               "std_conc": [24, 8, 2.7, 0.9, 0.3, 0.1] * 2,
-               "volumes": [2.000, 0.667, 0.222, 0.074, 0.025, 0.008, 0.003, 0.001],
+               "od_file": "",
+               "std_row": "A B C D",
+               "std_pos": "",
+               "std_conc": [1200, 600, 300, 150, 75, 37.5, 18.75, 9.38, 4.69, 2.34, 1.17, 0.59],
+               "volumes": [0.06, 0.012, 0.0024, 0.00048, 0.000096, 0.0000192, 0.00000384, 0.000000768],
                "points": 8
                }
         for proj in proj_names

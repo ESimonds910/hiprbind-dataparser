@@ -44,7 +44,6 @@ def make_calculations(dfs, proj_data):
     final_dfs = []
 
     for df in dfs:
-        df["Od600"] = df["Od600"].apply(lambda x: round(float(x), 2) if x != "" else "0.0")
 
         df["Alpha_avg_raw"] = df.loc[:, "Alpha_1":"Alpha_8"].mean(axis=1)
 
@@ -65,7 +64,9 @@ def make_calculations(dfs, proj_data):
 
         df["HPB_DNA"] = round(df["Alpha.Max.Slope"] / df["DNA.Max.Slope"], 2)
 
-        df["HPB_OD"] = round(df["Alpha.Max.Slope"] / df["Od600"], 2)
+        if proj_data["od_file"] != "":
+            df["HPB_OD"] = round(df["Alpha.Max.Slope"] / df["Od600"], 2)
+            df["Od600"] = df["Od600"].apply(lambda x: round(float(x), 2) if x != "" else "0.0")
 
         final_dfs.append(df)
     return final_dfs
