@@ -74,7 +74,10 @@ def data_format(source, proj_data):
     main_formatted_df = pd.DataFrame()
 
     start_row = 0
-    end_row = 8
+    if points == 8:
+        end_row = 8
+    else:
+        end_row = 16
     for plate in plates:
         well_index = 0
         for row in range(start_row, end_row, 2):

@@ -45,17 +45,21 @@ def make_calculations(dfs, proj_data):
 
     for df in dfs:
 
-        df["Alpha_avg_raw"] = df.loc[:, "Alpha_1":"Alpha_8"].mean(axis=1)
+        # df["Alpha_avg_raw"] = df.loc[:, "Alpha_1":"Alpha_8"].mean(axis=1)
 
         for signal in signals:
-            for n in range(1, 8):
+            for n in range(1, points):
                 df[f"{signal}_slope_{n}"] = round(
                     (df[f"{signal}_{n + 1}"] - df[f"{signal}_{n}"]) / (dv[n] - dv[n - 1]), 2
                 )
 
             # df["Value"] = df["Alpha_avg_raw"].apply(find_max, args=(df, ))
             # df["4pt_selection"] = df.loc[:, "alpha_slope_1":"alpha_slope_4"].max(axis=1)
-            df[f"{signal}.Max.Slope"] = df.loc[:, f"{signal}_slope_1": f"{signal}_slope_4"].max(axis=1)
+            if points == 8:
+                last_slope = 4
+            else:
+                last_slope = 3
+            df[f"{signal}.Max.Slope"] = df.loc[:, f"{signal}_slope_1": f"{signal}_slope_{last_slope}"].max(axis=1)
 
         # for n in range(1, 8):
         #     df[f"DNA_slope_{n}"] = round((df[f"DNA_{n + 1}"] - df[f"DNA_{n}"]) / (dv[n] - dv[n - 1]), 2)
@@ -65,8 +69,8 @@ def make_calculations(dfs, proj_data):
         df["HPB_DNA"] = round(df["Alpha.Max.Slope"] / df["DNA.Max.Slope"], 2)
 
         if proj_data["od_file"] != "":
-            df["HPB_OD"] = round(df["Alpha.Max.Slope"] / df["Od600"], 2)
             df["Od600"] = df["Od600"].apply(lambda x: round(float(x), 2) if x != "" else "0.0")
+            df["HPB_OD"] = round(df["Alpha.Max.Slope"] / df["Od600"], 2)
 
         final_dfs.append(df)
     return final_dfs
