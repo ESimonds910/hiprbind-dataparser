@@ -17,12 +17,16 @@ class DataFormatter:
                          ]
 
     # TODO edit replicate data to same table
-    def formatter(self, all_enspire_data, all_rep_data, plate_ids, dilutions, proj_name, std_row, std_conc, std_pos):
+    def formatter(self, all_enspire_data, plate_ids, dilutions, proj_name, std_row, std_conc, std_pos):
+        start_row = 0
+        end_row = 16
         for plate in plate_ids:
+            print(plate[:2])
+            print(f"{start_row} and {end_row}")
             if len(plate) == 2 or plate.split("-")[1] == "1":
                 wl = 0
-                end_row = 16
-                for row in range(0, end_row, 2):
+                for row in range(start_row, end_row, 2):
+
                     end_col = int(all_enspire_data.shape[1] / 2)
                     for col in range(1, end_col, 2):
                         dna_col_id = col + 24
@@ -51,7 +55,7 @@ class DataFormatter:
                                 2,
                                 "std_conc",
                                 bloc_df["Well_Id"].apply(
-                                    lambda x: std_conc[int(x[1:]) - 1] if x[:1] in std_row and int(x[1:]) > 6 else ""
+                                    lambda x: std_conc[int(x[1:]) - 1] if x[:1] in std_row or x[1:] in std_row and int(x[1:]) > 6 else ""
                                 )
                             )
                         elif std_row != "":
@@ -59,7 +63,7 @@ class DataFormatter:
                                 2,
                                 "std_conc",
                                 bloc_df["Well_Id"].apply(
-                                    lambda x: std_conc[int(x[1:]) - 1] if x[:1] == std_row else ""
+                                    lambda x: std_conc[int(x[1:]) - 1] if x[:1] == std_row or  x[1:] == std_row else "")
                                 )
                             )
                         if std_row != "" and std_pos == "half":
@@ -86,6 +90,9 @@ class DataFormatter:
                         wl += 1
                         self.all_data_signals = pd.concat([self.all_data_signals, bloc_df])
                         self.display_ready_df = pd.concat([self.display_ready_df, display_bloc])
+                end_row += 16
+                start_row += 16
+        pd.DataFrame.to_csv(self.all_data_signals, "All_data_test.csv")
 
         self.all_data_signals.set_index("Unique_Id", inplace=True)
 

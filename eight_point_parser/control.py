@@ -62,12 +62,11 @@ def run_main(proj_names):
 
         raw_od = import_od(od_file_path)
 
-        source_df, rep_df = file_finder.data_finder(
+        source_df = file_finder.data_finder(
             plates,
             raw_enpsire_path,
-            std_row
         )
-
+        print(f"control\n {source_df}")
         clean_df, main_df, clean_rep_df, main_rep_df = data_formatter.data_format(
             source_df,
             proj_name,

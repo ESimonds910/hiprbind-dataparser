@@ -1,15 +1,15 @@
 {
-    "SSF615": {
-        "plate num": 1,
+    "SSF00616": {
+        "plate num": 4,
         "first rep": 0,
         "last rep": 0,
         "all rep": 0,
-        "raw_file_path": "L:/Molecular Sciences/Small Scale Runs/SSF00615 DSS AKITA (96DW) TIR and CH hit combinatorial Plasmids/Assays/HiPrBind/Raw/615 P3.csv",
+        "raw_file_path": "L:/Molecular Sciences/Small Scale Runs/SSF00616 LS Akita low diversity library based on ACE NGS data/Assays/HiPrBind/Raw/SSF00616 - Copy.csv",
         "Plate IDs": [
-            "P1"
+            "P1", "P2", "P3", "P4"
         ],
-        "OD path": "L:/Molecular Sciences/Small Scale Runs/SSF00615 DSS AKITA (96DW) TIR and CH hit combinatorial Plasmids/SSF00615 Library Retests (LR) 96DW ELN v1.5.xlsm",
-        "Output path": "L:/Molecular Sciences/Small Scale Runs/SSF00615 DSS AKITA (96DW) TIR and CH hit combinatorial Plasmids/Assays/HiPrBind/Processed/SSF00615_output.xlsx",
+        "OD path": "L:/Molecular Sciences/Small Scale Runs/SSF00616 LS Akita low diversity library based on ACE NGS data/SSF00616 Library Screening (LS) ELN v2.xlsx",
+        "Output path": "L:/Molecular Sciences/Small Scale Runs/SSF00616 LS Akita low diversity library based on ACE NGS data/Assays/HiPrBind/Processed/SSF00616_output_test.xlsx",
         "Dilution volumes":  "0.357142857 0.056390977 0.006265664 0.000368568"
     }
 }
