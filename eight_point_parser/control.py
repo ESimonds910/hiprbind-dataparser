@@ -118,7 +118,7 @@ def run_main(proj_names):
         complete_df = eight_pt_calculations.make_calculations(main_join_df, volumes)
         complete_rep_df = eight_pt_calculations.make_calculations(main_rep_join_df, volumes)
 
-        with pd.ExcelWriter(f"{project_title}_output.xlsx") as writer:
+        with pd.ExcelWriter(f"{project_title}_output_rerun.xlsx") as writer:
             complete_df.to_excel(writer, sheet_name="Calculations")
             clean_join_df.to_excel(writer, sheet_name="Display_Ready")
             complete_rep_df.to_excel(writer, sheet_name="Rep_Calculations")
