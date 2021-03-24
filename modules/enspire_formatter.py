@@ -55,7 +55,7 @@ class DataFormatter:
                                 2,
                                 "std_conc",
                                 bloc_df["Well_Id"].apply(
-                                    lambda x: std_conc[int(x[1:]) - 1] if x[:1] in std_row and int(x[1:]) > 6 else ""
+                                    lambda x: std_conc[int(x[1:]) - 1] if x[:1] in std_row or x[1:] in std_row and int(x[1:]) > 6 else ""
                                 )
                             )
                         elif std_row != "":
@@ -63,7 +63,7 @@ class DataFormatter:
                                 2,
                                 "std_conc",
                                 bloc_df["Well_Id"].apply(
-                                    lambda x: std_conc[int(x[1:]) - 1] if x[:1] == std_row else ""
+                                    lambda x: std_conc[int(x[1:]) - 1] if x[:1] == std_row or  x[1:] == std_row else "")
                                 )
                             )
                         if std_row != "" and std_pos == "half":
