@@ -71,10 +71,20 @@ if __name__ == "__main__":
     window = Tk()
     window.withdraw()
     proj_names = [
-        "SSF00622-CD19"
+        "SSF00618",
+        "SSF00621"
     ]
-    u_volumes = [2.40000, 0.48000, 0.09600, 0.01920, 0.00384, 0.00077, 0.00015, 0.00003]
-    c_volumes = [4.286, 1.531, 0.547, 0.195, 0.070, 0.025, 0.009, 0.003]
+    plate_ids_18 = ["P1-1", "P1-2"]
+    plate_ids_21 = ["P1", "P2-1", "P2-2"]
+    od_file_18 = r"L:\Molecular Sciences\Small Scale Runs\SSF00618 DSS AKITA truncated version of ABS24443 SGIO hits\SSF00618 DSS AKITA ELN v1.5.xlsm"
+    od_file_21 = r"L:\Molecular Sciences\Small Scale Runs\SSF00621 LR (96DW) AKITA SSF00616 LR low diversity library based on ACE NGS data\SSF00621 Library Retests (LR) 96DW ELN v2.xlsm"
+
+    std_ids_21 = "A11 B11 C11 D11 E11 F11 A12 B12 C12 D12 E12 F12"
+    std_conc_18 = [100, 50, 16.7, 5.6, 1.9, 0.6] * 2
+    std_ids_18 = "H"
+    std_dict_21 = {"A11": 0.6, "B11": 1.9, "C11": 5.6, "D11": 16.7, "E11": 50, "F11": 100,
+                   "A12": 0.6, "B12": 1.9, "C12": 5.6, "D12": 16.7, "E12": 50, "F12": 100}
+
     # plates = input("Plate ids: ").split(" ")
     # raw_enpsire_path = askopenfilename(title="Choose raw file")
     # # od_file_path = askopenfilename(title="Choose ELN file")
@@ -87,22 +97,32 @@ if __name__ == "__main__":
     # volumes = [2.000, 0.667, 0.222, 0.074, 0.025, 0.008, 0.003, 0.001]
 
     proj_data_dict = {
-        proj: {"plates": input("Plate ids: ").split(" "),
+        proj: {"plates": "",
                "raw_file": askopenfilename(title="Choose raw file"),
                "od_file": r"L:\Molecular Sciences\Small Scale Runs\SSF00622 DSS (96DW) XOLO 40 variant screening Repeat of SSF00613\SSF00622 Xolo DSS ELN v2.xlsm",
-               "std_row": "D",
-               "std_pos": "half",
+               "std_row": "",
+               "std_pos": "",
                "std_conc": [24, 8.0, 2.7, 0.9, 0.3, 0.1] * 2,
-               "volumes": "",
-               "points": 8
+               "volumes": [0.357142857, 0.056390977, 0.006265664, 0.000368568],
+               "points": 4
                }
         for proj in proj_names
     }
     for proj, inner in proj_data_dict.items():
-        if proj == "SSF00622-CD19":
-            inner["volumes"] = c_volumes
+        if proj == "SSF00618":
+            inner["plates"] = plate_ids_18
+            inner["od_file"] = od_file_18
+            inner["std_row"] = std_ids_18
+            inner["std_conc"] = std_conc_18
         else:
-            inner["volumes"] = u_volumes
+            inner["plates"] = plate_ids_21
+            inner["od_file"] = od_file_21
+            inner["std_conc"] = std_dict_21
+    #     if proj == "SSF00622-CD19":
+    #         inner["volumes"] = c_volumes
+    #     else:
+    #         inner["volumes"] = u_volumes
+    # "plates": input("Plate ids: ").split(" ")
 
     run_main(proj_data_dict)
     window.destroy()
