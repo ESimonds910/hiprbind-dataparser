@@ -2,6 +2,7 @@ import pandas as pd
 from time import time
 from tkinter import Tk
 from tkinter.filedialog import askopenfilename
+from string import ascii_uppercase as upstr
 from modules.test_files.Test_parser.import_csv_test import FileFinder
 import modules.test_files.Test_parser.test_formatter as test_formatter
 import modules.test_files.Test_parser.enspire_od_join_test as enspire_od_join
@@ -79,11 +80,11 @@ if __name__ == "__main__":
     od_file_18 = r"L:\Molecular Sciences\Small Scale Runs\SSF00618 DSS AKITA truncated version of ABS24443 SGIO hits\SSF00618 DSS AKITA ELN v1.5.xlsm"
     od_file_21 = r"L:\Molecular Sciences\Small Scale Runs\SSF00621 LR (96DW) AKITA SSF00616 LR low diversity library based on ACE NGS data\SSF00621 Library Retests (LR) 96DW ELN v2.xlsm"
 
-    std_ids_21 = "A11 B11 C11 D11 E11 F11 A12 B12 C12 D12 E12 F12"
-    std_conc_18 = [100, 50, 16.7, 5.6, 1.9, 0.6] * 2
-    std_ids_18 = "H"
-    std_dict_21 = {"A11": 0.6, "B11": 1.9, "C11": 5.6, "D11": 16.7, "E11": 50, "F11": 100,
-                   "A12": 0.6, "B12": 1.9, "C12": 5.6, "D12": 16.7, "E12": 50, "F12": 100}
+    # std_ids_21 = "A11 B11 C11 D11 E11 F11 A12 B12 C12 D12 E12 F12"
+    # std_conc_18 = [100, 50, 16.7, 5.6, 1.9, 0.6] * 2
+    # std_ids_18 = "H"
+    # std_dict_21 = {"A11": 0.6, "B11": 1.9, "C11": 5.6, "D11": 16.7, "E11": 50, "F11": 100,
+    #                "A12": 0.6, "B12": 1.9, "C12": 5.6, "D12": 16.7, "E12": 50, "F12": 100}
 
     # plates = input("Plate ids: ").split(" ")
     # raw_enpsire_path = askopenfilename(title="Choose raw file")
@@ -102,22 +103,55 @@ if __name__ == "__main__":
                "od_file": r"L:\Molecular Sciences\Small Scale Runs\SSF00622 DSS (96DW) XOLO 40 variant screening Repeat of SSF00613\SSF00622 Xolo DSS ELN v2.xlsm",
                "std_row": "",
                "std_pos": "",
-               "std_conc": [24, 8.0, 2.7, 0.9, 0.3, 0.1] * 2,
+               "std_conc": "",
                "volumes": [0.357142857, 0.056390977, 0.006265664, 0.000368568],
                "points": 4
                }
         for proj in proj_names
     }
     for proj, inner in proj_data_dict.items():
+        more_ids = True
+        std_conc = input("Enter standard concentration, e.g. '100, 50, 25, 12, 6, 3': ").split(",")
+        std_conc_len = len(std_conc)
+        z = input("Enter 'column' or 'row': ").lower()
+        std_ids = []
+        count = 1
+        while more_ids == True:
+
+            y = input("Enter staring well id, e.g. 'A11' or 'G1'").capitalize()
+
+            if z == "column":
+                col_letter = y[:1]
+                letter_idx = upstr.index(col_letter)
+                col_num = y[1:]
+                std_ids += [f"{upstr[letter]}{col_num}" for letter in range(letter_idx, std_conc_len)]
+
+            elif z == 'row':
+                row_letter = y[:1]
+                row_num = int(y[1:])
+                std_ids += [f"{row_letter}{num}" for num in range(row_num, row_num + std_conc_len)]
+
+            else:
+                print("Sorry, you may not have typed 'column' or 'row'.")
+
+            add_more = input("Hit 'enter' to add replicates, or 'n' to continue: ").lower()
+            if add_more == "n":
+                std_conc *= count
+                more_ids = False
+            else:
+                count += 1
+
+        std_dict = dict(zip(std_ids, std_conc))
+        inner["std_conc"] = std_dict
+
         if proj == "SSF00618":
             inner["plates"] = plate_ids_18
             inner["od_file"] = od_file_18
-            inner["std_row"] = std_ids_18
-            inner["std_conc"] = std_conc_18
+
         else:
             inner["plates"] = plate_ids_21
             inner["od_file"] = od_file_21
-            inner["std_conc"] = std_dict_21
+
     #     if proj == "SSF00622-CD19":
     #         inner["volumes"] = c_volumes
     #     else:
