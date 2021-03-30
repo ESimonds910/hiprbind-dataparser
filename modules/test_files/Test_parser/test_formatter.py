@@ -24,7 +24,7 @@ def add_standard(df, proj_data):
     if type(std_conc) == dict:
         df.insert(
             6,
-            "stc_conc",
+            "std_conc",
             df["Well_Id"].apply(
                 lambda x: std_conc[x] if x in std_conc else ""
             )
