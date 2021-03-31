@@ -3,11 +3,11 @@ from time import time
 from tkinter import Tk
 from tkinter.filedialog import askopenfilename
 from string import ascii_uppercase as upstr
-from modules.test_files.Test_parser.import_csv_test import FileFinder
-import modules.test_files.Test_parser.test_formatter as test_formatter
-import modules.test_files.Test_parser.enspire_od_join_test as enspire_od_join
-import modules.test_files.Test_parser.pt_calculations_test as pt_calculations
-from modules.test_files.Test_parser.import_od_test import import_od
+from import_csv_test import FileFinder
+import test_formatter as test_formatter
+import enspire_od_join_test as enspire_od_join
+import pt_calculations_test as pt_calculations
+from import_od_test import import_od
 
 
 def run_main(proj_dict):
@@ -151,12 +151,6 @@ if __name__ == "__main__":
         else:
             inner["plates"] = plate_ids_21
             inner["od_file"] = od_file_21
-
-    #     if proj == "SSF00622-CD19":
-    #         inner["volumes"] = c_volumes
-    #     else:
-    #         inner["volumes"] = u_volumes
-    # "plates": input("Plate ids: ").split(" ")
 
     run_main(proj_data_dict)
     window.destroy()
