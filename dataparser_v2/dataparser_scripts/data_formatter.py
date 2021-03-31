@@ -21,7 +21,15 @@ def add_standard(df, proj_data):
     std_conc = proj_data["std_conc"]
     std_pos = proj_data["std_pos"]
 
-    if std_row != "" and std_pos == "half":
+    if type(std_conc) == dict:
+        df.insert(
+            6,
+            "std_conc",
+            df["Well_Id"].apply(
+                lambda x: std_conc[x] if x in std_conc else ""
+            )
+        )
+    elif std_row != "" and std_pos == "half":
         df.insert(
             6,
             "std_conc",
