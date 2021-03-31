@@ -5,8 +5,7 @@ from tkinter.filedialog import askopenfilename
 from import_csv_test import FileFinder
 import data_formatter
 import eight_pt_calculations
-from eight_point_concat import DataConcat
-from modules.import_od import import_od
+from dataparser_v1.modules.import_od import import_od
 
 
 def join_dfs(df_list, raw_od, std_pos, std_row, ab_name):

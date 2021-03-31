@@ -3,11 +3,11 @@ from time import time
 from tkinter import Tk
 from tkinter.filedialog import askopenfilename
 from string import ascii_uppercase as upstr
-from import_csv_test import FileFinder
-import test_formatter as test_formatter
-import enspire_od_join_test as enspire_od_join
-import pt_calculations_test as pt_calculations
-from import_od_test import import_od
+from import_csv import FileFinder
+import data_formatter as formatter
+import enspire_od_join as enspire_od_join
+import pt_calculations as pt_calculations
+from import_od import import_od
 
 
 def run_main(proj_dict):
@@ -26,7 +26,7 @@ def run_main(proj_dict):
 
         source_df = file_finder.data_finder(proj_data)
 
-        df_list = test_formatter.data_format(source_df, proj_data)
+        df_list = formatter.data_format(source_df, proj_data)
 
         if proj_data["od_file"] != "":
             raw_od = import_od(proj_data)
@@ -44,7 +44,7 @@ def run_main(proj_dict):
         final_main_df = completed_main_dfs[0]
         final_main_rep_df = completed_main_dfs[1]
 
-        with pd.ExcelWriter(f"../test_outputs/{project_title}_output_test.xlsx") as writer:
+        with pd.ExcelWriter(f"../test_files/test_outputs/{project_title}_output_test.xlsx") as writer:
             final_main_df.to_excel(writer, sheet_name="Calculations")
             final_display_df.to_excel(writer, sheet_name="Display_Ready")
             final_main_rep_df.to_excel(writer, sheet_name="Rep_Calculations")
