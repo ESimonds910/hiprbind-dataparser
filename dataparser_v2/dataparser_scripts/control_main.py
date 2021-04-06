@@ -1,4 +1,5 @@
 import pandas as pd
+import numpy as np
 from time import time
 from tkinter import Tk
 from tkinter.filedialog import askopenfilename
@@ -10,6 +11,7 @@ import enspire_od_join as enspire_od_join
 import pt_calculations as pt_calculations
 from import_od import import_od
 
+# TODO just create separate inputs module
 
 def concat_projs(df):
     all_projs_df = pd.DataFrame()
@@ -84,91 +86,74 @@ if __name__ == "__main__":
     window = Tk()
     window.withdraw()
     proj_names = [
-        "SOM00006-akita", "SOM00006-dalm"
+        "SSF00617"
     ]
-    plate_ids_18 = ["P1-1", "P1-2"]
-    plate_ids_21 = ["P2-1", "P2-2"]
-    vol_ak = [0.357142857, 0.056390977, 0.006265664, 0.000368568]
-    vol_dal = [0.071428571, 0.003401361, 0.00016197, 7.71284E-06]
-    # plate_ids_18 = ["P1-1", "P1-2"]
-    # plate_ids_21 = ["P1", "P2-1", "P2-2"]
-    # od_file_18 = r"L:\Molecular Sciences\Small Scale Runs\SSF00618 DSS AKITA truncated version of ABS24443 SGIO hits\SSF00618 DSS AKITA ELN v1.5.xlsm"
-    # od_file_21 = r"L:\Molecular Sciences\Small Scale Runs\SSF00621 LR (96DW) AKITA SSF00616 LR low diversity library based on ACE NGS data\SSF00621 Library Retests (LR) 96DW ELN v2.xlsm"
+    plate_ids_1 = ["P1-1", "P1-2"]
+    # plate_ids_2 = ["P1-1", "P1-2"]
 
-    # std_ids_21 = "A11 B11 C11 D11 E11 F11 A12 B12 C12 D12 E12 F12"
-    # std_conc_18 = [100, 50, 16.7, 5.6, 1.9, 0.6] * 2
-    # std_ids_18 = "H"
-    # std_dict_21 = {"A11": 0.6, "B11": 1.9, "C11": 5.6, "D11": 16.7, "E11": 50, "F11": 100,
-    #                "A12": 0.6, "B12": 1.9, "C12": 5.6, "D12": 16.7, "E12": 50, "F12": 100}
-
-    # plates = input("Plate ids: ").split(" ")
-    # raw_enpsire_path = askopenfilename(title="Choose raw file")
-    # # od_file_path = askopenfilename(title="Choose ELN file")
-    # od_file_path = r"L:\Molecular Sciences\Small Scale Runs\SSF00613 DSS (96DW) Xolo 40 variant screening\SSF00613 Discrete Strain Screening (DSS) 96DW ELN v1.5.xlsm".replace(
-    #     "\\", "/")
-    #
-    # std_row = "D"
-    # std_pos = "half"
-    # std_conc = [24, 8, 2.7, 0.9, 0.3, 0.1] * 2
-    # volumes = [2.000, 0.667, 0.222, 0.074, 0.025, 0.008, 0.003, 0.001]
+    vol_dal = [0.357142857, 0.056390977, 0.006265664, 0.000368568]
 
     proj_data_dict = {
         proj: {"plates": "",
-               "raw_file": "",
-               "od_file": r"L:\High Throughput Screening\SOM\SOM00006_Transformed_Evolved_Strains\Assays\OD\Processed\SOM0006 HTP OD600.xlsx",
+               "raw_file": r"L:\Molecular Sciences\Small Scale Runs\SSF00617 AKITA DSS  KOs based on Tn5 KO Hits and raiA, rmf KOs v1.5\Assays\HiPrBind\Raw\SSF00617.csv",
+               "od_file": "",
                "std_row": "",
                "std_pos": "",
                "std_conc": "",
-               "volumes": "",
+               "volumes": vol_dal,
                "points": 4
                }
         for proj in proj_names
     }
     for proj, inner in proj_data_dict.items():
-        more_ids = True
-        std_conc = input("Enter standard concentration, e.g. '100, 50, 25, 12, 6, 3': ").split(",")
-        std_conc_len = len(std_conc)
-        z = input("Enter 'column', 'row', 'none: ").lower()
-        std_ids = []
-        count = 1
-        while more_ids == True:
+        add_std = input("Use standard? y/n    ")
+        if add_std == 'y':
+            more_ids = True
+            std_conc = input("Enter standard concentration, e.g. '100, 50, 25, 12, 6, 3': ").split(",")
+            std_conc_len = len(std_conc)
+            z = input("Enter 'column', 'row', 'none: ").lower()
+            std_ids = []
+            count = 1
+            while more_ids == True:
 
-            y = input("Enter staring well id, e.g. 'A11' or 'G1'").capitalize()
+                y = input("Enter staring well id, e.g. 'A11' or 'G1'").capitalize()
 
-            if z == "column":
-                col_letter = y[:1]
-                letter_idx = upstr.index(col_letter)
-                col_num = y[1:]
-                std_ids += [f"{upstr[letter]}{col_num}" for letter in range(letter_idx, std_conc_len)]
+                if z == "column":
+                    col_letter = y[:1]
+                    letter_idx = upstr.index(col_letter)
+                    col_num = y[1:]
+                    std_ids += [f"{upstr[letter]}{str(col_num).zfill(2)}" for letter in range(letter_idx, std_conc_len)]
 
-            elif z == 'row':
-                row_letter = y[:1]
-                row_num = int(y[1:])
-                std_ids += [f"{row_letter}{num}" for num in range(row_num, row_num + std_conc_len)]
+                elif z == 'row':
+                    row_letter = y[:1]
+                    row_num = int(y[1:])
+                    std_ids += [f"{row_letter}{str(num).zfill(2)}" for num in range(row_num, row_num + std_conc_len)]
 
-            elif z == 'none':
-                break
+                elif z == 'none':
+                    break
 
-            else:
-                print("Sorry, you may not have typed 'column' or 'row'.")
+                else:
+                    print("Sorry, you may not have typed 'column' or 'row'.")
 
-            add_more = input("Hit 'enter' to add replicates, or 'n' to continue: ").lower()
-            if add_more == "n":
-                std_conc *= count
-                more_ids = False
-            else:
-                count += 1
+                add_more = input("Hit 'enter' to add replicates, or 'n' to continue: ").lower()
+                if add_more == "n":
+                    std_conc *= count
+                    more_ids = False
+                else:
+                    count += 1
 
-        std_dict = dict(zip(std_ids, std_conc))
-        inner["std_conc"] = std_dict
+            std_dict = dict(zip(std_ids, std_conc))
+            inner["std_conc"] = std_dict
 
-        if proj == "SOM00006-akita":
-            inner["plates"] = plate_ids_18
-            inner["volumes"] = vol_ak
 
-        else:
-            inner["plates"] = plate_ids_21
-            inner["volumes"] = vol_dal
+        if proj == "SSF00617":
+            inner["plates"] = plate_ids_1
+            # inner["volumes"] = vol_ak
+            inner["od_file"] = r"L:\Molecular Sciences\Small Scale Runs\SSF00617 AKITA DSS  KOs based on Tn5 KO Hits and raiA, rmf KOs v1.5\SSF00617 Akita DSS KOs based on Tn5 KO Hits and raiA, rmf KOs ELN v1.5.xlsm"
+        # elif proj == "SSD00001":
+        #     inner["plates"] = plate_ids_2
+            # inner["volumes"] = vol_dal
+
         # if proj == "SSF00618":
         #     inner["plates"] = plate_ids_18
         #     inner["od_file"] = od_file_18
