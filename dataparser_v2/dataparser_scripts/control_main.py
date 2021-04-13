@@ -86,22 +86,26 @@ if __name__ == "__main__":
     window = Tk()
     window.withdraw()
     proj_names = [
-        "SSF00617"
+        "Ferm0441"
     ]
-    plate_ids_1 = ["P1-1", "P1-2"]
-    # plate_ids_2 = ["P1-1", "P1-2"]
+    # proj_names = ["SSF00627"]
+    plate_ids_1 = ["P1-1", "P1-2", "P2-1", "P2-2", "P3-1", "P3-2", "P4-1", "P4-2"]
+    # plate_ids_2 = ["P2", "P3"]
+    # plate_ids_3 = ["P1-1", "P1-2"]
 
-    vol_dal = [0.357142857, 0.056390977, 0.006265664, 0.000368568]
+    # vol_dal = [0.071428571, 0.003401361, 0.00016197, 7.71284E-06]
+    vol_dal = [0.857142857, 0.12244898, 0.006444683, 0.000339194]
+
 
     proj_data_dict = {
         proj: {"plates": "",
-               "raw_file": r"L:\Molecular Sciences\Small Scale Runs\SSF00617 AKITA DSS  KOs based on Tn5 KO Hits and raiA, rmf KOs v1.5\Assays\HiPrBind\Raw\SSF00617.csv",
+               "raw_file": "",
                "od_file": "",
                "std_row": "",
                "std_pos": "",
                "std_conc": "",
                "volumes": vol_dal,
-               "points": 4
+               "points": 8
                }
         for proj in proj_names
     }
@@ -111,11 +115,11 @@ if __name__ == "__main__":
             more_ids = True
             std_conc = input("Enter standard concentration, e.g. '100, 50, 25, 12, 6, 3': ").split(",")
             std_conc_len = len(std_conc)
-            z = input("Enter 'column', 'row', 'none: ").lower()
+
             std_ids = []
             count = 1
             while more_ids == True:
-
+                z = input("Enter 'column', 'row', 'none: ").lower()
                 y = input("Enter staring well id, e.g. 'A11' or 'G1'").capitalize()
 
                 if z == "column":
@@ -146,13 +150,15 @@ if __name__ == "__main__":
             inner["std_conc"] = std_dict
 
 
-        if proj == "SSF00617":
+        if proj == "Ferm0441":
             inner["plates"] = plate_ids_1
             # inner["volumes"] = vol_ak
-            inner["od_file"] = r"L:\Molecular Sciences\Small Scale Runs\SSF00617 AKITA DSS  KOs based on Tn5 KO Hits and raiA, rmf KOs v1.5\SSF00617 Akita DSS KOs based on Tn5 KO Hits and raiA, rmf KOs ELN v1.5.xlsm"
-        # elif proj == "SSD00001":
+            # inner["od_file"] = r"C:\Users\esimonds\Downloads\SOM00008_data_for_HPB.csv"
+        # elif proj == "SOM00008-std2":
         #     inner["plates"] = plate_ids_2
-            # inner["volumes"] = vol_dal
+        #     inner["od_file"] = r"C:\Users\esimonds\Downloads\SOM00008_data_for_HPB.csv"
+        # elif proj == "SSD00001":
+        #     inner["plates"] = plate_ids_3
 
         # if proj == "SSF00618":
         #     inner["plates"] = plate_ids_18
