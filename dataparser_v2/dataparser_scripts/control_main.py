@@ -1,18 +1,32 @@
 import pandas as pd
+import numpy as np
 from time import time
 from tkinter import Tk
 from tkinter.filedialog import askopenfilename
 from string import ascii_uppercase as upstr
+import file_split as fs
 from import_csv import FileFinder
 import data_formatter as formatter
 import enspire_od_join as enspire_od_join
 import pt_calculations as pt_calculations
 from import_od import import_od
 
+# TODO just create separate inputs module
+
+def concat_projs(df):
+    all_projs_df = pd.DataFrame()
+    pass
 
 def run_main(proj_dict):
+    proj_concat = False
     file_finder = FileFinder()
 
+    file_type = input("Is raw file one or multiple projects. Type 'one' or 'many': ").lower()
+    if file_type == 'many':
+        proj_dict = fs.split_projects(proj_dict)
+        response = input("Combine projects to one output? Type 'y' to combine or any key to continue").lower()
+        if response == 'y':
+            proj_concat = True
     for proj, inner_dict in proj_dict.items():
         project_title = proj
         if "-" in proj:
@@ -72,86 +86,88 @@ if __name__ == "__main__":
     window = Tk()
     window.withdraw()
     proj_names = [
-        "SSF00618",
-        "SSF00621"
+        "Ferm0441"
     ]
-    plate_ids_18 = ["P1-1", "P1-2"]
-    plate_ids_21 = ["P1", "P2-1", "P2-2"]
-    od_file_18 = r"L:\Molecular Sciences\Small Scale Runs\SSF00618 DSS AKITA truncated version of ABS24443 SGIO hits\SSF00618 DSS AKITA ELN v1.5.xlsm"
-    od_file_21 = r"L:\Molecular Sciences\Small Scale Runs\SSF00621 LR (96DW) AKITA SSF00616 LR low diversity library based on ACE NGS data\SSF00621 Library Retests (LR) 96DW ELN v2.xlsm"
+    # proj_names = ["SSF00627"]
+    plate_ids_1 = ["P1-1", "P1-2", "P2-1", "P2-2", "P3-1", "P3-2", "P4-1", "P4-2"]
+    # plate_ids_2 = ["P2", "P3"]
+    # plate_ids_3 = ["P1-1", "P1-2"]
 
-    # std_ids_21 = "A11 B11 C11 D11 E11 F11 A12 B12 C12 D12 E12 F12"
-    # std_conc_18 = [100, 50, 16.7, 5.6, 1.9, 0.6] * 2
-    # std_ids_18 = "H"
-    # std_dict_21 = {"A11": 0.6, "B11": 1.9, "C11": 5.6, "D11": 16.7, "E11": 50, "F11": 100,
-    #                "A12": 0.6, "B12": 1.9, "C12": 5.6, "D12": 16.7, "E12": 50, "F12": 100}
+    # vol_dal = [0.071428571, 0.003401361, 0.00016197, 7.71284E-06]
+    vol_dal = [0.857142857, 0.12244898, 0.006444683, 0.000339194]
 
-    # plates = input("Plate ids: ").split(" ")
-    # raw_enpsire_path = askopenfilename(title="Choose raw file")
-    # # od_file_path = askopenfilename(title="Choose ELN file")
-    # od_file_path = r"L:\Molecular Sciences\Small Scale Runs\SSF00613 DSS (96DW) Xolo 40 variant screening\SSF00613 Discrete Strain Screening (DSS) 96DW ELN v1.5.xlsm".replace(
-    #     "\\", "/")
-    #
-    # std_row = "D"
-    # std_pos = "half"
-    # std_conc = [24, 8, 2.7, 0.9, 0.3, 0.1] * 2
-    # volumes = [2.000, 0.667, 0.222, 0.074, 0.025, 0.008, 0.003, 0.001]
 
     proj_data_dict = {
         proj: {"plates": "",
-               "raw_file": askopenfilename(title="Choose raw file"),
-               "od_file": r"L:\Molecular Sciences\Small Scale Runs\SSF00622 DSS (96DW) XOLO 40 variant screening Repeat of SSF00613\SSF00622 Xolo DSS ELN v2.xlsm",
+               "raw_file": "",
+               "od_file": "",
                "std_row": "",
                "std_pos": "",
                "std_conc": "",
-               "volumes": [0.357142857, 0.056390977, 0.006265664, 0.000368568],
-               "points": 4
+               "volumes": vol_dal,
+               "points": 8
                }
         for proj in proj_names
     }
     for proj, inner in proj_data_dict.items():
-        more_ids = True
-        std_conc = input("Enter standard concentration, e.g. '100, 50, 25, 12, 6, 3': ").split(",")
-        std_conc_len = len(std_conc)
-        z = input("Enter 'column' or 'row': ").lower()
-        std_ids = []
-        count = 1
-        while more_ids == True:
+        add_std = input("Use standard? y/n    ")
+        if add_std == 'y':
+            more_ids = True
+            std_conc = input("Enter standard concentration, e.g. '100, 50, 25, 12, 6, 3': ").split(",")
+            std_conc_len = len(std_conc)
 
-            y = input("Enter staring well id, e.g. 'A11' or 'G1'").capitalize()
+            std_ids = []
+            count = 1
+            while more_ids == True:
+                z = input("Enter 'column', 'row', 'none: ").lower()
+                y = input("Enter staring well id, e.g. 'A11' or 'G1'").capitalize()
 
-            if z == "column":
-                col_letter = y[:1]
-                letter_idx = upstr.index(col_letter)
-                col_num = y[1:]
-                std_ids += [f"{upstr[letter]}{col_num}" for letter in range(letter_idx, std_conc_len)]
+                if z == "column":
+                    col_letter = y[:1]
+                    letter_idx = upstr.index(col_letter)
+                    col_num = y[1:]
+                    std_ids += [f"{upstr[letter]}{str(col_num).zfill(2)}" for letter in range(letter_idx, std_conc_len)]
 
-            elif z == 'row':
-                row_letter = y[:1]
-                row_num = int(y[1:])
-                std_ids += [f"{row_letter}{num}" for num in range(row_num, row_num + std_conc_len)]
+                elif z == 'row':
+                    row_letter = y[:1]
+                    row_num = int(y[1:])
+                    std_ids += [f"{row_letter}{str(num).zfill(2)}" for num in range(row_num, row_num + std_conc_len)]
 
-            else:
-                print("Sorry, you may not have typed 'column' or 'row'.")
+                elif z == 'none':
+                    break
 
-            add_more = input("Hit 'enter' to add replicates, or 'n' to continue: ").lower()
-            if add_more == "n":
-                std_conc *= count
-                more_ids = False
-            else:
-                count += 1
+                else:
+                    print("Sorry, you may not have typed 'column' or 'row'.")
 
-        std_dict = dict(zip(std_ids, std_conc))
-        inner["std_conc"] = std_dict
+                add_more = input("Hit 'enter' to add replicates, or 'n' to continue: ").lower()
+                if add_more == "n":
+                    std_conc *= count
+                    more_ids = False
+                else:
+                    count += 1
 
-        if proj == "SSF00618":
-            inner["plates"] = plate_ids_18
-            inner["od_file"] = od_file_18
+            std_dict = dict(zip(std_ids, std_conc))
+            inner["std_conc"] = std_dict
 
-        else:
-            inner["plates"] = plate_ids_21
-            inner["od_file"] = od_file_21
 
+        if proj == "Ferm0441":
+            inner["plates"] = plate_ids_1
+            # inner["volumes"] = vol_ak
+            # inner["od_file"] = r"C:\Users\esimonds\Downloads\SOM00008_data_for_HPB.csv"
+        # elif proj == "SOM00008-std2":
+        #     inner["plates"] = plate_ids_2
+        #     inner["od_file"] = r"C:\Users\esimonds\Downloads\SOM00008_data_for_HPB.csv"
+        # elif proj == "SSD00001":
+        #     inner["plates"] = plate_ids_3
+
+        # if proj == "SSF00618":
+        #     inner["plates"] = plate_ids_18
+        #     inner["od_file"] = od_file_18
+        #
+        # else:
+        #     inner["plates"] = plate_ids_21
+        #     inner["od_file"] = od_file_21
+    # askopenfilename(title="Choose raw file")
     run_main(proj_data_dict)
     window.destroy()
     end_time = time()
