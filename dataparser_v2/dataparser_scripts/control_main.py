@@ -86,26 +86,26 @@ if __name__ == "__main__":
     window = Tk()
     window.withdraw()
     proj_names = [
-        "Ferm0441"
+        "SSF00626",
     ]
     # proj_names = ["SSF00627"]
-    plate_ids_1 = ["P1-1", "P1-2", "P2-1", "P2-2", "P3-1", "P3-2", "P4-1", "P4-2"]
+    plate_ids_1 = ["P1-1", "P1-2"]
     # plate_ids_2 = ["P2", "P3"]
     # plate_ids_3 = ["P1-1", "P1-2"]
 
     # vol_dal = [0.071428571, 0.003401361, 0.00016197, 7.71284E-06]
-    vol_dal = [0.857142857, 0.12244898, 0.006444683, 0.000339194]
+    vol_sp = [0.857142857, 0.12244898, 0.006444683, 0.000339194]
 
 
     proj_data_dict = {
         proj: {"plates": "",
                "raw_file": "",
-               "od_file": "",
+               "od_file": r"L:\Molecular Sciences\Small Scale Runs\SSF00626 DSS Spaniel_discrete chaperone set\SSF00626 Spaniel (96DW) ELN v2.xlsm",
                "std_row": "",
                "std_pos": "",
                "std_conc": "",
-               "volumes": vol_dal,
-               "points": 8
+               "volumes": vol_sp,
+               "points": 4
                }
         for proj in proj_names
     }
@@ -150,10 +150,10 @@ if __name__ == "__main__":
             inner["std_conc"] = std_dict
 
 
-        if proj == "Ferm0441":
+        if proj == "SSF00626":
             inner["plates"] = plate_ids_1
             # inner["volumes"] = vol_ak
-            # inner["od_file"] = r"C:\Users\esimonds\Downloads\SOM00008_data_for_HPB.csv"
+            # inner["od_file"] = r"L:\Molecular Sciences\Small Scale Runs\SSF00627 DSS Spaniel003_discrete host screening\Copy of SSF00627 DSS Spaniel ELN_v2 copy.xlsm"
         # elif proj == "SOM00008-std2":
         #     inner["plates"] = plate_ids_2
         #     inner["od_file"] = r"C:\Users\esimonds\Downloads\SOM00008_data_for_HPB.csv"
