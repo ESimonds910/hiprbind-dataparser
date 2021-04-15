@@ -17,9 +17,9 @@ def find_replicate_data(df):
 
 
 def add_standard(df, proj_data):
-    std_row = proj_data["std_row"]
+    # std_row = proj_data["std_row"]
     std_conc = proj_data["std_conc"]
-    std_pos = proj_data["std_pos"]
+    # std_pos = proj_data["std_pos"]
 
     if type(std_conc) == dict:
         df.insert(
@@ -29,22 +29,22 @@ def add_standard(df, proj_data):
                 lambda x: std_conc[x] if x in std_conc else ""
             )
         )
-    elif std_row != "" and std_pos == "half":
-        df.insert(
-            6,
-            "std_conc",
-            df["Well_Id"].apply(
-                lambda x: std_conc[int(x[1:]) - 1] if x[:1] in std_row and int(x[1:]) > 6 else ""
-            )
-        )
-    elif std_row != "":
-        df.insert(
-            6,
-            "std_conc",
-            df["Well_Id"].apply(
-                lambda x: std_conc[int(x[1:]) - 1] if x[:1] in std_row else ""
-            )
-        )
+    # elif std_row != "" and std_pos == "half":
+    #     df.insert(
+    #         6,
+    #         "std_conc",
+    #         df["Well_Id"].apply(
+    #             lambda x: std_conc[int(x[1:]) - 1] if x[:1] in std_row and int(x[1:]) > 6 else ""
+    #         )
+    #     )
+    # elif std_row != "":
+    #     df.insert(
+    #         6,
+    #         "std_conc",
+    #         df["Well_Id"].apply(
+    #             lambda x: std_conc[int(x[1:]) - 1] if x[:1] in std_row else ""
+    #         )
+    #     )
     return df
 
 
