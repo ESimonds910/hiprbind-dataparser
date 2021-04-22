@@ -90,15 +90,6 @@ if __name__ == "__main__":
     # proj_names = [
     #     "SSF00626",
     # ]
-    # # proj_names = ["SSF00627"]
-    # plate_ids_1 = ["P1-1", "P1-2"]
-    # # plate_ids_2 = ["P2", "P3"]
-    # # plate_ids_3 = ["P1-1", "P1-2"]
-    #
-    # # vol_dal = [0.071428571, 0.003401361, 0.00016197, 7.71284E-06]
-    # vol_sp = [0.857142857, 0.12244898, 0.006444683, 0.000339194]
-    #
-    #
     # proj_data_dict = {
     #     proj: {"plates": "",
     #            "raw_file": "",
@@ -156,20 +147,6 @@ if __name__ == "__main__":
     #         inner["plates"] = plate_ids_1
             # inner["volumes"] = vol_ak
             # inner["od_file"] = r"L:\Molecular Sciences\Small Scale Runs\SSF00627 DSS Spaniel003_discrete host screening\Copy of SSF00627 DSS Spaniel ELN_v2 copy.xlsm"
-        # elif proj == "SOM00008-std2":
-        #     inner["plates"] = plate_ids_2
-        #     inner["od_file"] = r"C:\Users\esimonds\Downloads\SOM00008_data_for_HPB.csv"
-        # elif proj == "SSD00001":
-        #     inner["plates"] = plate_ids_3
-
-        # if proj == "SSF00618":
-        #     inner["plates"] = plate_ids_18
-        #     inner["od_file"] = od_file_18
-        #
-        # else:
-        #     inner["plates"] = plate_ids_21
-        #     inner["od_file"] = od_file_21
-    # askopenfilename(title="Choose raw file")
     run_main(proj_data_dict)
     window.destroy()
     end_time = time()
