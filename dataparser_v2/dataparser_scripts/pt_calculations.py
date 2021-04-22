@@ -68,7 +68,7 @@ def make_calculations(dfs, proj_data):
 
         df["HPB_DNA"] = round(df["Alpha.Max.Slope"] / df["DNA.Max.Slope"], 2)
 
-        if proj_data["od_file"] != "":
+        if proj_data["od_file"]:
             df["Od600"] = df["Od600"].apply(lambda x: round(float(x), 2) if x != "" else "0.0")
             df["HPB_OD"] = round(df["Alpha.Max.Slope"] / df["Od600"], 2)
 

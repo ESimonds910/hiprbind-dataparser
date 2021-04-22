@@ -1,5 +1,6 @@
 import pandas as pd
 from tkinter import messagebox
+from tkinter.filedialog import askopenfilename
 
 
 def header_check(columns):
@@ -15,7 +16,8 @@ def header_check(columns):
 
 
 def import_od(proj_data):
-    input_od_path = proj_data["od_file"]
+    # input_od_path = proj_data["od_file"]
+    input_od_path = askopenfilename(title="Choose OD file.")
     try:
         od_data = pd.read_excel(input_od_path, sheet_name="Growth Details")
     except FileNotFoundError:
