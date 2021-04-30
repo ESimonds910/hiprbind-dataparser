@@ -41,3 +41,8 @@ def split_projects(proj_dict):
     window.destroy()
 
     return proj_dict
+
+
+if __name__ == "__main__":
+    print("This is only a test.")
+
